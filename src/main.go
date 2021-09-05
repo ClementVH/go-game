@@ -16,18 +16,18 @@ func main() {
 	RenderEngine.CreateDisplay()
 
 	var vertices = []float32{
-		// Left Bottom triangle
 		-0.5, 0.5, 0,
 		-0.5, -0.5, 0,
 		0.5, -0.5, 0,
-
-		// Right Top triangle
-		0.5, -0.5, 0,
 		0.5, 0.5, 0,
-		-0.5, 0.5, 0,
 	}
 
-	var model RenderEngine.RawModel = RenderEngine.LoadToVAO(vertices)
+	var indices = []uint32{
+		0, 1, 3,
+		3, 1, 2,
+	}
+
+	var model RenderEngine.RawModel = RenderEngine.LoadToVAO(vertices, indices)
 
 	for !RenderEngine.Window.ShouldClose() {
 		RenderEngine.Prepare()
