@@ -5,7 +5,7 @@ import (
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
 
-var window *glfw.Window
+var Window *glfw.Window
 
 func CreateDisplay() {
 	var err error
@@ -17,12 +17,12 @@ func CreateDisplay() {
 	glfw.WindowHint(glfw.Resizable, glfw.False)
 	glfw.WindowHint(glfw.Samples, 4)
 
-	window, err = glfw.CreateWindow(640, 480, "Go-Game", nil, nil)
+	Window, err = glfw.CreateWindow(640, 480, "Go-Game", nil, nil)
 	if err != nil {
 		panic(err)
 	}
 
-	window.MakeContextCurrent()
+	Window.MakeContextCurrent()
 
 	if err = gl.Init(); err != nil {
 		panic(err)
@@ -32,15 +32,8 @@ func CreateDisplay() {
 }
 
 func UpdateDisplay() {
-	for !window.ShouldClose() {
-
-		gl.Clear(gl.COLOR_BUFFER_BIT)
-
-		gl.ClearColor(1.0, 0, 0, 0.0)
-
-		window.SwapBuffers()
-		glfw.PollEvents()
-	}
+	Window.SwapBuffers()
+	glfw.PollEvents()
 }
 
 func CloseDisplay() {
