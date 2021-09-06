@@ -3,8 +3,10 @@ package main
 import (
 	"runtime"
 
+	"go-game/src/Models"
 	"go-game/src/RenderEngine"
 	"go-game/src/Shaders"
+	"go-game/src/Textures"
 )
 
 func init() {
@@ -28,13 +30,25 @@ func main() {
 		3, 1, 2,
 	}
 
-	var model RenderEngine.RawModel = RenderEngine.LoadToVAO(vertices, indices)
+	var textureCoords = []float32{
+		0, 0,
+		0, 1,
+		1, 1,
+		1, 0,
+	}
+
 	var staticShader = Shaders.CreateStaticShader()
+	var texturedModel = Models.TexturedModel{
+		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, indices),
+		Texture: Textures.ModelTexture{
+			TextureID: RenderEngine.LoadTexture("texture.png"),
+		},
+	}
 
 	for !RenderEngine.Window.ShouldClose() {
 		RenderEngine.Prepare()
 		Shaders.Start(staticShader)
-		RenderEngine.Render(model)
+		RenderEngine.Render(texturedModel)
 		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}
