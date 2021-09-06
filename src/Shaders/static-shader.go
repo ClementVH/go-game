@@ -1,8 +1,17 @@
 package Shaders
 
-func CreateStaticShader() ShaderProgram {
-	var shader = CreateShaderProgram()
-	bindAttribute(shader, 0, "position")
-	bindAttribute(shader, 1, "textureCoords")
+type StaticShader struct {
+	ShaderProgram
+}
+
+func NewStaticShader() StaticShader {
+	shader := StaticShader{ShaderProgram{}}
+	shader.ShaderProgram.IShaderProgram = &shader
+	shader.create()
 	return shader
+}
+
+func (shader *StaticShader) bindAttributes() {
+	shader.bindAttribute(0, "position")
+	shader.bindAttribute(1, "textureCoords")
 }

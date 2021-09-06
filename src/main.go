@@ -37,7 +37,7 @@ func main() {
 		1, 0,
 	}
 
-	var staticShader = Shaders.CreateStaticShader()
+	var staticShader = Shaders.NewStaticShader()
 	var texturedModel = Models.TexturedModel{
 		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, indices),
 		Texture: Textures.ModelTexture{
@@ -47,12 +47,12 @@ func main() {
 
 	for !RenderEngine.Window.ShouldClose() {
 		RenderEngine.Prepare()
-		Shaders.Start(staticShader)
+		staticShader.Start()
 		RenderEngine.Render(texturedModel)
 		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}
 
-	Shaders.CleanUp(staticShader)
+	staticShader.CleanUp()
 	RenderEngine.CloseDisplay()
 }

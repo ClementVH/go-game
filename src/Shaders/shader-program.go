@@ -7,28 +7,32 @@ import (
 	"github.com/go-gl/gl/v3.3-core/gl"
 )
 
+type IShaderProgram interface {
+	bindAttributes()
+}
+
 type ShaderProgram struct {
+	IShaderProgram
 	programID        uint32
 	vertexShaderID   uint32
 	fragmentShaderID uint32
 }
 
-func CreateShaderProgram() ShaderProgram {
+func (shader *ShaderProgram) create() {
 	vertexShaderID := loadShader(gl.VERTEX_SHADER)
 	fragmentShaderID := loadShader(gl.FRAGMENT_SHADER)
 	programID := gl.CreateProgram()
 	gl.AttachShader(programID, vertexShaderID)
 	gl.AttachShader(programID, fragmentShaderID)
+	shader.programID = programID
+	shader.vertexShaderID = vertexShaderID
+	shader.fragmentShaderID = fragmentShaderID
+	shader.bindAttributes()
 	gl.LinkProgram(programID)
 	gl.ValidateProgram(programID)
-	return ShaderProgram{
-		programID:        programID,
-		vertexShaderID:   vertexShaderID,
-		fragmentShaderID: fragmentShaderID,
-	}
 }
 
-func Start(shader ShaderProgram) {
+func (shader *ShaderProgram) Start() {
 	gl.UseProgram(shader.programID)
 }
 
@@ -36,7 +40,7 @@ func Stop() {
 	gl.UseProgram(0)
 }
 
-func CleanUp(shader ShaderProgram) {
+func (shader *ShaderProgram) CleanUp() {
 	Stop()
 	gl.DetachShader(shader.programID, shader.vertexShaderID)
 	gl.DetachShader(shader.programID, shader.fragmentShaderID)
@@ -45,7 +49,7 @@ func CleanUp(shader ShaderProgram) {
 	gl.DeleteProgram(shader.programID)
 }
 
-func bindAttribute(shader ShaderProgram, attribute uint32, name string) {
+func (shader *ShaderProgram) bindAttribute(attribute uint32, name string) {
 	nameArray := []uint8(name)
 	gl.BindAttribLocation(shader.programID, attribute, &nameArray[0])
 }
