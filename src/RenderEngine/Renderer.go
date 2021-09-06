@@ -3,7 +3,7 @@ package RenderEngine
 import "github.com/go-gl/gl/v3.3-core/gl"
 
 func Prepare() {
-	gl.ClearColor(1, 0, 0, 1)
+	gl.ClearColor(1, 1, 1, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT)
 }
 

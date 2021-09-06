@@ -4,6 +4,7 @@ import (
 	"runtime"
 
 	"go-game/src/RenderEngine"
+	"go-game/src/Shaders"
 )
 
 func init() {
@@ -28,13 +29,16 @@ func main() {
 	}
 
 	var model RenderEngine.RawModel = RenderEngine.LoadToVAO(vertices, indices)
+	var staticShader = Shaders.CreateStaticShader()
 
 	for !RenderEngine.Window.ShouldClose() {
 		RenderEngine.Prepare()
+		Shaders.Start(staticShader)
 		RenderEngine.Render(model)
+		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}
 
-	RenderEngine.UpdateDisplay()
+	Shaders.CleanUp(staticShader)
 	RenderEngine.CloseDisplay()
 }
