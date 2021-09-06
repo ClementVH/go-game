@@ -5,10 +5,12 @@ import (
 	"strings"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 type IShaderProgram interface {
 	bindAttributes()
+	getAllUniformLocations()
 }
 
 type ShaderProgram struct {
@@ -30,6 +32,12 @@ func (shader *ShaderProgram) create() {
 	shader.bindAttributes()
 	gl.LinkProgram(programID)
 	gl.ValidateProgram(programID)
+	shader.getAllUniformLocations()
+}
+
+func (shader *ShaderProgram) getUniformLocation(name string) int32 {
+	nameArray := []uint8(name)
+	return gl.GetUniformLocation(shader.programID, &nameArray[0])
 }
 
 func (shader *ShaderProgram) Start() {
@@ -52,6 +60,26 @@ func (shader *ShaderProgram) CleanUp() {
 func (shader *ShaderProgram) bindAttribute(attribute uint32, name string) {
 	nameArray := []uint8(name)
 	gl.BindAttribLocation(shader.programID, attribute, &nameArray[0])
+}
+
+func loadFloat(location int32, value float32) {
+	gl.Uniform1f(location, value)
+}
+
+func loadVector(location int32, vector mgl32.Vec3) {
+	gl.Uniform3f(location, vector.X(), vector.Y(), vector.Z())
+}
+
+func loadBoolean(location int32, value bool) {
+	var toLoad float32 = 0
+	if value {
+		toLoad = 1
+	}
+	gl.Uniform1f(location, toLoad)
+}
+
+func loadMatrix(location int32, matrix mgl32.Mat4) {
+	gl.UniformMatrix4fv(location, 1, false, &matrix[0])
 }
 
 func loadShader(shaderType uint32) uint32 {

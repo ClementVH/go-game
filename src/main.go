@@ -3,10 +3,13 @@ package main
 import (
 	"runtime"
 
+	"go-game/src/Entities"
 	"go-game/src/Models"
 	"go-game/src/RenderEngine"
 	"go-game/src/Shaders"
 	"go-game/src/Textures"
+
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 func init() {
@@ -45,10 +48,18 @@ func main() {
 		},
 	}
 
+	var entity = Entities.NewEntity(
+		texturedModel,
+		mgl32.Vec3{-1, 0, 0},
+		0, 0, 0, 1,
+	)
+
 	for !RenderEngine.Window.ShouldClose() {
+		entity.IncreasePostion(0.00006, 0, 0)
+		entity.IncreaseRotation(0, 0.03, 0)
 		RenderEngine.Prepare()
 		staticShader.Start()
-		RenderEngine.Render(texturedModel)
+		RenderEngine.Render(entity, staticShader)
 		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}
