@@ -23,17 +23,16 @@ func main() {
 
 	staticShader := Shaders.NewStaticShader()
 	RenderEngine.Setup(staticShader)
-	texturedModel := Loaders.LoadGltf("cube.gltf")
+	texturedModel := Loaders.LoadGltf("../res/zelda", "scene.gltf")
 
 	camera := Entities.NewCamera()
 	entity := Entities.NewEntity(
 		texturedModel,
-		mgl32.Vec3{0, 0, -5},
-		0, 0, 0, 1,
+		mgl32.Vec3{0, -5, -10},
+		0, 0, 0, 0.05,
 	)
 
 	for !RenderEngine.Window.ShouldClose() {
-		entity.IncreaseRotation(-0.01, -0.01, 0)
 		RenderEngine.Prepare()
 		staticShader.Start()
 		staticShader.LoadViewMatrix(camera)

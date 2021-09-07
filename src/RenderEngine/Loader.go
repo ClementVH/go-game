@@ -23,8 +23,8 @@ func LoadToVAO(positions []float32, textureCoords []float32, indices []uint32) *
 	}
 }
 
-func LoadTexture(file string) uint32 {
-	imgFile, err := os.Open("../res/" + file)
+func LoadTexture(folder string, file string) uint32 {
+	imgFile, err := os.Open(folder + "/" + file)
 	if err != nil {
 		log.Fatalf("texture %q not found on disk: %v\n", file, err)
 	}

@@ -10,16 +10,33 @@ import (
 	"github.com/qmuntal/gltf"
 )
 
-func LoadGltf(filename string) *Models.TexturedModel {
-	doc, _ := gltf.Open("../res/" + filename)
-	vertices := getFloats(doc, 1)
-	indices := getIndices(doc, 0)
-	textureCoords := getFloats(doc, 4)
+func LoadGltf(folder string, filename string) *Models.TexturedModel {
+	doc, _ := gltf.Open(folder + "/" + filename)
+	return loadMesh(doc, 2, folder)
+}
+
+func loadMesh(doc *gltf.Document, index int, folder string) *Models.TexturedModel {
+	positionAccessorIndex := doc.Meshes[index].Primitives[0].Attributes["POSITION"]
+	textureCoordsAccessorIndex := doc.Meshes[index].Primitives[0].Attributes["TEXCOORD_0"]
+	indicesAccessorIndex := *doc.Meshes[index].Primitives[0].Indices
+
+	vertices := getFloats(doc, int(positionAccessorIndex))
+	indices := getIndices(doc, int(indicesAccessorIndex))
+	textureCoords := getFloats(doc, int(textureCoordsAccessorIndex))
+
 	return &Models.TexturedModel{
 		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, indices),
-		Texture: Textures.ModelTexture{
-			TextureID: RenderEngine.LoadTexture("Cube_BaseColor.png"),
-		},
+		Texture:  getTexture(doc, index, folder),
+	}
+}
+
+func getTexture(doc *gltf.Document, index int, folder string) *Textures.ModelTexture {
+	materialIndex := *doc.Meshes[index].Primitives[0].Material
+	imageIndex := doc.Materials[materialIndex].PBRMetallicRoughness.BaseColorTexture.Index
+	imageUri := doc.Images[imageIndex].URI
+
+	return &Textures.ModelTexture{
+		TextureID: RenderEngine.LoadTexture(folder, imageUri),
 	}
 }
 
