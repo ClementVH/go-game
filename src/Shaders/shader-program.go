@@ -71,7 +71,7 @@ func loadVector(location int32, vector mgl32.Vec3) {
 }
 
 func loadBoolean(location int32, value bool) {
-	var toLoad float32 = 0
+	toLoad := float32(0)
 	if value {
 		toLoad = 1
 	}

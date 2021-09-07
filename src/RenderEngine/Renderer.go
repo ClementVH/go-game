@@ -13,8 +13,8 @@ const FOV = 70
 const NEAR_PLANE = 0.1
 const FAR_PLANE = 1000
 
-func Setup(shader Shaders.StaticShader) {
-	var matrix = createProjectionMatrix()
+func Setup(shader *Shaders.StaticShader) {
+	matrix := createProjectionMatrix()
 	shader.Start()
 	shader.LoadProjectionMatrix(matrix)
 	Shaders.Stop()
@@ -26,13 +26,13 @@ func Prepare() {
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 }
 
-func Render(entity Entities.Entity, shader Shaders.StaticShader) {
-	var model = entity.Model
-	var rawModel = model.RawModel
+func Render(entity *Entities.Entity, shader *Shaders.StaticShader) {
+	model := entity.Model
+	rawModel := model.RawModel
 	gl.BindVertexArray(rawModel.VaoID)
 	gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
 	gl.EnableVertexArrayAttrib(rawModel.VaoID, 1)
-	var transformationMatrix = ToolBox.CreateTransformationMatrix(
+	transformationMatrix := ToolBox.CreateTransformationMatrix(
 		entity.Position,
 		entity.RotX, entity.RotY, entity.RotZ,
 		entity.Scale,

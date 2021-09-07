@@ -33,7 +33,7 @@ func (camera *Camera) Move(keyName string) {
 
 func (camera *Camera) initCameraMovements() {
 	glfw.GetCurrentContext().SetKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
-		var keyName = glfw.GetKeyName(key, scancode)
+		keyName := glfw.GetKeyName(key, scancode)
 		switch keyName {
 		case "z":
 			camera.Move(keyName)

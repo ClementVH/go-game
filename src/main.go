@@ -21,13 +21,12 @@ func main() {
 
 	RenderEngine.CreateDisplay()
 
-	var staticShader = Shaders.NewStaticShader()
+	staticShader := Shaders.NewStaticShader()
 	RenderEngine.Setup(staticShader)
 	texturedModel := Loaders.LoadGltf("cube.gltf")
 
 	camera := Entities.NewCamera()
-
-	var entity = Entities.NewEntity(
+	entity := Entities.NewEntity(
 		texturedModel,
 		mgl32.Vec3{0, 0, -5},
 		0, 0, 0, 1,

@@ -3,6 +3,6 @@ package Models
 import "go-game/src/Textures"
 
 type TexturedModel struct {
-	RawModel RawModel
+	RawModel *RawModel
 	Texture  Textures.ModelTexture
 }

@@ -14,11 +14,11 @@ type StaticShader struct {
 	viewMatrix           int32
 }
 
-func NewStaticShader() StaticShader {
+func NewStaticShader() *StaticShader {
 	shader := StaticShader{ShaderProgram{}, 0, 0, 0}
 	shader.ShaderProgram.IShaderProgram = &shader
 	shader.create()
-	return shader
+	return &shader
 }
 
 func (shader *StaticShader) bindAttributes() {
@@ -41,6 +41,6 @@ func (shader *StaticShader) LoadProjectionMatrix(projection mgl32.Mat4) {
 }
 
 func (shader *StaticShader) LoadViewMatrix(camera *Entities.Camera) {
-	var matrix = ToolBox.CreateViewMatrix(camera)
+	matrix := ToolBox.CreateViewMatrix(camera)
 	loadMatrix(shader.viewMatrix, matrix)
 }
