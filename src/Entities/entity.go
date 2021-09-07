@@ -7,12 +7,12 @@ import (
 )
 
 type Entity struct {
-	Model                   *Models.TexturedModel
+	Meshes                  []*Models.TexturedModel
 	Position                mgl32.Vec3
 	RotX, RotY, RotZ, Scale float32
 }
 
-func NewEntity(model *Models.TexturedModel, position mgl32.Vec3, RotX, RotY, RotZ, scale float32) *Entity {
+func NewEntity(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, RotZ, scale float32) *Entity {
 	return &Entity{
 		model,
 		position,

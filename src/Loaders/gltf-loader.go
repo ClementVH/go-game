@@ -12,12 +12,12 @@ import (
 
 func LoadGltf(folder string, filename string) []*Models.TexturedModel {
 	doc, _ := gltf.Open(folder + "/" + filename)
-	var models []*Models.TexturedModel
+	var meshes []*Models.TexturedModel
 	for i := 0; i < len(doc.Meshes); i++ {
 		mesh := loadMesh(doc, i, folder)
-		models = append(models, mesh)
+		meshes = append(meshes, mesh)
 	}
-	return models
+	return meshes
 }
 
 func loadMesh(doc *gltf.Document, index int, folder string) *Models.TexturedModel {

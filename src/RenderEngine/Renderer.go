@@ -27,25 +27,27 @@ func Prepare() {
 }
 
 func Render(entity *Entities.Entity, shader *Shaders.StaticShader) {
-	model := entity.Model
-	rawModel := model.RawModel
-	gl.BindVertexArray(rawModel.VaoID)
-	gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
-	gl.EnableVertexArrayAttrib(rawModel.VaoID, 1)
-	transformationMatrix := ToolBox.CreateTransformationMatrix(
-		entity.Position,
-		entity.RotX, entity.RotY, entity.RotZ,
-		entity.Scale,
-	)
+	meshes := entity.Meshes
+	for _, mesh := range meshes {
+		rawModel := mesh.RawModel
+		gl.BindVertexArray(rawModel.VaoID)
+		gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
+		gl.EnableVertexArrayAttrib(rawModel.VaoID, 1)
+		transformationMatrix := ToolBox.CreateTransformationMatrix(
+			entity.Position,
+			entity.RotX, entity.RotY, entity.RotZ,
+			entity.Scale,
+		)
 
-	shader.LoadTransformationMatrix(transformationMatrix)
+		shader.LoadTransformationMatrix(transformationMatrix)
 
-	gl.ActiveTexture(gl.TEXTURE0)
-	gl.BindTexture(gl.TEXTURE_2D, model.Texture.TextureID)
-	gl.DrawElements(gl.TRIANGLES, int32(rawModel.VertexCount), gl.UNSIGNED_INT, nil)
-	gl.DisableVertexArrayAttrib(rawModel.VaoID, 0)
-	gl.DisableVertexArrayAttrib(rawModel.VaoID, 1)
-	gl.BindVertexArray(0)
+		gl.ActiveTexture(gl.TEXTURE0)
+		gl.BindTexture(gl.TEXTURE_2D, mesh.Texture.TextureID)
+		gl.DrawElements(gl.TRIANGLES, int32(rawModel.VertexCount), gl.UNSIGNED_INT, nil)
+		gl.DisableVertexArrayAttrib(rawModel.VaoID, 0)
+		gl.DisableVertexArrayAttrib(rawModel.VaoID, 1)
+		gl.BindVertexArray(0)
+	}
 }
 
 func createProjectionMatrix() mgl32.Mat4 {

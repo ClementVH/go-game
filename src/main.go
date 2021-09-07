@@ -24,30 +24,21 @@ func main() {
 
 	staticShader := Shaders.NewStaticShader()
 	RenderEngine.Setup(staticShader)
-	texturedModels := Loaders.LoadGltf("../res/zelda", "scene.gltf")
 
 	camera := Entities.NewCamera()
-	var entities []*Entities.Entity
-	for i := 0; i < len(texturedModels); i++ {
-		entity := Entities.NewEntity(
-			texturedModels[i],
-			mgl32.Vec3{0, -5, -10},
-			0, 0, 0, 0.05,
-		)
-		entities = append(entities, entity)
-	}
+	entity := Entities.NewEntity(
+		Loaders.LoadGltf("../res/zelda", "scene.gltf"),
+		mgl32.Vec3{0, -5, -10},
+		0, 0, 0, 0.05,
+	)
 
 	for !RenderEngine.Window.ShouldClose() {
 		ToolBox.FpsCount()
+		entity.IncreaseRotation(0, -0.015, 0)
 		RenderEngine.Prepare()
 		staticShader.Start()
 		staticShader.LoadViewMatrix(camera)
-
-		for i := 0; i < len(entities); i++ {
-			entities[i].IncreaseRotation(0, -0.015, 0)
-			RenderEngine.Render(entities[i], staticShader)
-		}
-
+		RenderEngine.Render(entity, staticShader)
 		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}
