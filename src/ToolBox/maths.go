@@ -16,7 +16,7 @@ func CreateTransformationMatrix(translation mgl32.Vec3, rx, ry, rz, scale float3
 	return matrix
 }
 
-func CreateViewMatrix(camera Entities.Camera) mgl32.Mat4 {
+func CreateViewMatrix(camera *Entities.Camera) mgl32.Mat4 {
 	var matrix = mgl32.Ident4()
 	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(camera.Pitch), mgl32.Vec3{1, 0, 0}))
 	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(camera.Yaw), mgl32.Vec3{0, 1, 0}))

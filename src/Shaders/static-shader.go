@@ -40,7 +40,7 @@ func (shader *StaticShader) LoadProjectionMatrix(projection mgl32.Mat4) {
 	loadMatrix(shader.projectionMatrix, projection)
 }
 
-func (shader *StaticShader) LoadViewMatrix(camera Entities.Camera) {
+func (shader *StaticShader) LoadViewMatrix(camera *Entities.Camera) {
 	var matrix = ToolBox.CreateViewMatrix(camera)
 	loadMatrix(shader.viewMatrix, matrix)
 }
