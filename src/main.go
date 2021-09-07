@@ -7,6 +7,7 @@ import (
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
 	"go-game/src/Shaders"
+	"go-game/src/ToolBox"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -23,20 +24,30 @@ func main() {
 
 	staticShader := Shaders.NewStaticShader()
 	RenderEngine.Setup(staticShader)
-	texturedModel := Loaders.LoadGltf("../res/zelda", "scene.gltf")
+	texturedModels := Loaders.LoadGltf("../res/zelda", "scene.gltf")
 
 	camera := Entities.NewCamera()
-	entity := Entities.NewEntity(
-		texturedModel,
-		mgl32.Vec3{0, -5, -10},
-		0, 0, 0, 0.05,
-	)
+	var entities []*Entities.Entity
+	for i := 0; i < len(texturedModels); i++ {
+		entity := Entities.NewEntity(
+			texturedModels[i],
+			mgl32.Vec3{0, -5, -10},
+			0, 0, 0, 0.05,
+		)
+		entities = append(entities, entity)
+	}
 
 	for !RenderEngine.Window.ShouldClose() {
+		ToolBox.FpsCount()
 		RenderEngine.Prepare()
 		staticShader.Start()
 		staticShader.LoadViewMatrix(camera)
-		RenderEngine.Render(entity, staticShader)
+
+		for i := 0; i < len(entities); i++ {
+			entities[i].IncreaseRotation(0, -0.015, 0)
+			RenderEngine.Render(entities[i], staticShader)
+		}
+
 		Shaders.Stop()
 		RenderEngine.UpdateDisplay()
 	}

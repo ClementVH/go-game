@@ -10,9 +10,14 @@ import (
 	"github.com/qmuntal/gltf"
 )
 
-func LoadGltf(folder string, filename string) *Models.TexturedModel {
+func LoadGltf(folder string, filename string) []*Models.TexturedModel {
 	doc, _ := gltf.Open(folder + "/" + filename)
-	return loadMesh(doc, 2, folder)
+	var models []*Models.TexturedModel
+	for i := 0; i < len(doc.Meshes); i++ {
+		mesh := loadMesh(doc, i, folder)
+		models = append(models, mesh)
+	}
+	return models
 }
 
 func loadMesh(doc *gltf.Document, index int, folder string) *Models.TexturedModel {
