@@ -1,12 +1,12 @@
 package main
 
 import (
+	"math/rand"
 	"runtime"
 
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
-	"go-game/src/Shaders"
 	"go-game/src/ToolBox"
 
 	"github.com/go-gl/mathgl/mgl32"
@@ -22,32 +22,40 @@ func main() {
 
 	RenderEngine.CreateDisplay()
 
-	staticShader := Shaders.NewStaticShader()
-	RenderEngine.Setup(staticShader)
-
 	camera := Entities.NewCamera()
-	entity := Entities.NewEntity(
-		Loaders.LoadGltf("../res/duck", "Duck.gltf"),
-		mgl32.Vec3{0, -5, -10},
-		0, 0, 0, 0.05,
-	)
+
+	model := Loaders.LoadGltf("../res/duck", "Duck.gltf")
+
+	entities := make([]*Entities.Entity, 0)
+	for i := 0; i < 100; i++ {
+		entity := Entities.NewEntity(
+			model,
+			mgl32.Vec3{randomFloat(-50, 50), randomFloat(-20, 5), randomFloat(-100, -50)},
+			0, 0, 0, 0.1,
+		)
+		entities = append(entities, entity)
+	}
 	light := Entities.NewLight(
-		mgl32.Vec3{100, 0, 0},
+		mgl32.Vec3{0, 100, 0},
 		mgl32.Vec3{1, 1, 1},
 	)
 
+
+	renderer := RenderEngine.NewMasterRenderer()
 	for !RenderEngine.Window.ShouldClose() {
 		ToolBox.FpsCount()
-		entity.IncreaseRotation(0, -0.01, 0)
-		RenderEngine.Prepare()
-		staticShader.Start()
-		staticShader.LoadLight(light)
-		staticShader.LoadViewMatrix(camera)
-		RenderEngine.Render(entity, staticShader)
-		Shaders.Stop()
+		for _, entity := range entities {
+			entity.IncreaseRotation(0, -0.01, 0)
+			renderer.ProcessEntity(entity)
+		}
+		renderer.Render(light, camera)
 		RenderEngine.UpdateDisplay()
 	}
 
-	staticShader.CleanUp()
+	renderer.Shader.CleanUp()
 	RenderEngine.CloseDisplay()
+}
+
+func randomFloat(min, max int) float32 {
+	return float32(min + rand.Intn(max-min+1))
 }
