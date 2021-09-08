@@ -18,16 +18,16 @@ func NewCamera() *Camera {
 
 func (camera *Camera) Move(keyName string) {
 	if keyName == "z" {
-		camera.Position[2] += 0.04
+		camera.Position[2] += 0.4
 	}
 	if keyName == "d" {
-		camera.Position[0] += 0.04
+		camera.Position[0] += 0.4
 	}
 	if keyName == "q" {
-		camera.Position[0] -= 0.04
+		camera.Position[0] -= 0.4
 	}
 	if keyName == "s" {
-		camera.Position[2] -= 0.04
+		camera.Position[2] -= 0.4
 	}
 }
 
