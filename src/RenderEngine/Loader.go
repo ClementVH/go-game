@@ -11,11 +11,12 @@ import (
 	"github.com/go-gl/gl/v3.3-core/gl"
 )
 
-func LoadToVAO(positions []float32, textureCoords []float32, indices []uint32) *Models.RawModel {
+func LoadToVAO(positions, textureCoords, normals []float32, indices []uint32) *Models.RawModel {
 	VaoID := createVAO()
 	bindIndicesBuffer(indices)
 	storeDataInAttributeList(0, 3, positions)
 	storeDataInAttributeList(1, 2, textureCoords)
+	storeDataInAttributeList(2, 3, normals)
 	unbindVAO()
 	return &Models.RawModel{
 		VaoID:       VaoID,

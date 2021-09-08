@@ -27,16 +27,21 @@ func main() {
 
 	camera := Entities.NewCamera()
 	entity := Entities.NewEntity(
-		Loaders.LoadGltf("../res/zelda", "scene.gltf"),
+		Loaders.LoadGltf("../res/duck", "Duck.gltf"),
 		mgl32.Vec3{0, -5, -10},
 		0, 0, 0, 0.05,
+	)
+	light := Entities.NewLight(
+		mgl32.Vec3{100, 0, 0},
+		mgl32.Vec3{1, 1, 1},
 	)
 
 	for !RenderEngine.Window.ShouldClose() {
 		ToolBox.FpsCount()
-		entity.IncreaseRotation(0, -0.015, 0)
+		entity.IncreaseRotation(0, -0.01, 0)
 		RenderEngine.Prepare()
 		staticShader.Start()
+		staticShader.LoadLight(light)
 		staticShader.LoadViewMatrix(camera)
 		RenderEngine.Render(entity, staticShader)
 		Shaders.Stop()

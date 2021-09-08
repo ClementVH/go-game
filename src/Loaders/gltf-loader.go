@@ -23,14 +23,16 @@ func LoadGltf(folder string, filename string) []*Models.TexturedModel {
 func loadMesh(doc *gltf.Document, index int, folder string) *Models.TexturedModel {
 	positionAccessorIndex := doc.Meshes[index].Primitives[0].Attributes["POSITION"]
 	textureCoordsAccessorIndex := doc.Meshes[index].Primitives[0].Attributes["TEXCOORD_0"]
+	normalsAccessorIndex := doc.Meshes[index].Primitives[0].Attributes["NORMAL"]
 	indicesAccessorIndex := *doc.Meshes[index].Primitives[0].Indices
 
 	vertices := getFloats(doc, int(positionAccessorIndex))
 	indices := getIndices(doc, int(indicesAccessorIndex))
+	normals := getFloats(doc, int(normalsAccessorIndex))
 	textureCoords := getFloats(doc, int(textureCoordsAccessorIndex))
 
 	return &Models.TexturedModel{
-		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, indices),
+		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, normals, indices),
 		Texture:  getTexture(doc, index, folder),
 	}
 }

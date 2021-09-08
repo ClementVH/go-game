@@ -22,7 +22,7 @@ func Setup(shader *Shaders.StaticShader) {
 
 func Prepare() {
 	gl.Enable(gl.DEPTH_TEST)
-	gl.ClearColor(1, 1, 1, 1)
+	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 }
 
@@ -33,6 +33,7 @@ func Render(entity *Entities.Entity, shader *Shaders.StaticShader) {
 		gl.BindVertexArray(rawModel.VaoID)
 		gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
 		gl.EnableVertexArrayAttrib(rawModel.VaoID, 1)
+		gl.EnableVertexArrayAttrib(rawModel.VaoID, 2)
 		transformationMatrix := ToolBox.CreateTransformationMatrix(
 			entity.Position,
 			entity.RotX, entity.RotY, entity.RotZ,
@@ -46,6 +47,7 @@ func Render(entity *Entities.Entity, shader *Shaders.StaticShader) {
 		gl.DrawElements(gl.TRIANGLES, int32(rawModel.VertexCount), gl.UNSIGNED_INT, nil)
 		gl.DisableVertexArrayAttrib(rawModel.VaoID, 0)
 		gl.DisableVertexArrayAttrib(rawModel.VaoID, 1)
+		gl.DisableVertexArrayAttrib(rawModel.VaoID, 2)
 		gl.BindVertexArray(0)
 	}
 }
