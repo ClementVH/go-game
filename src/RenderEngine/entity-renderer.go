@@ -10,36 +10,22 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-const FOV = 70
-const NEAR_PLANE = 0.1
-const FAR_PLANE = 1000
-
-type Renderer struct {
-	projectionMatrix mgl32.Mat4
+type EntityRenderer struct {
 	shader           *Shaders.StaticShader
 }
 
-func NewRenderer(shader *Shaders.StaticShader) *Renderer {
-	renderer := &Renderer{
-		createProjectionMatrix(),
+func NewRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityRenderer {
+	renderer := &EntityRenderer{
 		shader,
 	}
-	gl.Enable(gl.CULL_FACE)
-	gl.CullFace(gl.BACK)
 	shader.Start()
-	shader.LoadProjectionMatrix(renderer.projectionMatrix)
+	shader.LoadProjectionMatrix(matrix)
 	Shaders.Stop()
 
 	return renderer
 }
 
-func (renderer *Renderer) Prepare() {
-	gl.Enable(gl.DEPTH_TEST)
-	gl.ClearColor(0, 0, 0, 1)
-	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-}
-
-func (renderer *Renderer) Render(entities map[*Models.TexturedModel][]*Entities.Entity) {
+func (renderer *EntityRenderer) Render(entities map[*Models.TexturedModel][]*Entities.Entity) {
 	for model, batch := range entities {
 		renderer.prepareTexturedModel(model)
 		for _, entity := range batch {
@@ -50,7 +36,7 @@ func (renderer *Renderer) Render(entities map[*Models.TexturedModel][]*Entities.
 	}
 }
 
-func (renderer *Renderer) prepareTexturedModel(model *Models.TexturedModel) {
+func (renderer *EntityRenderer) prepareTexturedModel(model *Models.TexturedModel) {
 	rawModel := model.RawModel
 	gl.BindVertexArray(rawModel.VaoID)
 	gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
@@ -60,7 +46,7 @@ func (renderer *Renderer) prepareTexturedModel(model *Models.TexturedModel) {
 	gl.BindTexture(gl.TEXTURE_2D, model.Texture.TextureID)
 }
 
-func (renderer *Renderer) unbindTexturedModel(model *Models.TexturedModel) {
+func (renderer *EntityRenderer) unbindTexturedModel(model *Models.TexturedModel) {
 	rawModel := model.RawModel
 	gl.DisableVertexArrayAttrib(rawModel.VaoID, 0)
 	gl.DisableVertexArrayAttrib(rawModel.VaoID, 1)
@@ -68,7 +54,7 @@ func (renderer *Renderer) unbindTexturedModel(model *Models.TexturedModel) {
 	gl.BindVertexArray(0)
 }
 
-func (renderer *Renderer) prepareInstance(entity *Entities.Entity) {
+func (renderer *EntityRenderer) prepareInstance(entity *Entities.Entity) {
 	transformationMatrix := ToolBox.CreateTransformationMatrix(
 		entity.Position,
 		entity.RotX, entity.RotY, entity.RotZ,
@@ -77,8 +63,4 @@ func (renderer *Renderer) prepareInstance(entity *Entities.Entity) {
 
 	renderer.shader.LoadTransformationMatrix(transformationMatrix)
 
-}
-
-func createProjectionMatrix() mgl32.Mat4 {
-	return mgl32.Perspective(mgl32.DegToRad(FOV), float32(640)/480, NEAR_PLANE, FAR_PLANE)
 }
