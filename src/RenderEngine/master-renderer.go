@@ -38,7 +38,7 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.Shader.LoadLight(light)
 	renderer.Shader.LoadViewMatrix(camera)
 	renderer.renderer.Render(renderer.entities)
-	Shaders.Stop()
+	renderer.Shader.Stop()
 	renderer.entities = make(map[*Models.TexturedModel][]*Entities.Entity)
 }
 

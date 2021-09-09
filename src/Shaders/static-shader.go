@@ -8,18 +8,20 @@ import (
 )
 
 type StaticShader struct {
-	ShaderProgram
 	transformationMatrix int32
 	projectionMatrix     int32
 	viewMatrix           int32
 	lightPosition        int32
 	lightColor           int32
+	ShaderProgram
 }
 
 func NewStaticShader() *StaticShader {
-	shader := StaticShader{ShaderProgram{}, 0, 0, 0, 0, 0}
-	shader.ShaderProgram.IShaderProgram = &shader
-	shader.create()
+	shaderProgram := NewShaderProgram()
+	shader := StaticShader{0, 0, 0, 0, 0, shaderProgram}
+	shader.bindAttributes()
+	shader.setup()
+	shader.getAllUniformLocations()
 	return &shader
 }
 

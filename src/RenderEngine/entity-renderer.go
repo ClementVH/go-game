@@ -20,7 +20,7 @@ func NewRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityRendere
 	}
 	shader.Start()
 	shader.LoadProjectionMatrix(matrix)
-	Shaders.Stop()
+	shader.Stop()
 
 	return renderer
 }

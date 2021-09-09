@@ -8,31 +8,30 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-type IShaderProgram interface {
-	bindAttributes()
-	getAllUniformLocations()
-}
-
 type ShaderProgram struct {
-	IShaderProgram
 	programID        uint32
 	vertexShaderID   uint32
 	fragmentShaderID uint32
 }
 
-func (shader *ShaderProgram) create() {
+func NewShaderProgram() ShaderProgram {
+	shaderProgram := ShaderProgram{0, 0, 0}
+
 	vertexShaderID := loadShader(gl.VERTEX_SHADER)
 	fragmentShaderID := loadShader(gl.FRAGMENT_SHADER)
 	programID := gl.CreateProgram()
 	gl.AttachShader(programID, vertexShaderID)
 	gl.AttachShader(programID, fragmentShaderID)
-	shader.programID = programID
-	shader.vertexShaderID = vertexShaderID
-	shader.fragmentShaderID = fragmentShaderID
-	shader.bindAttributes()
-	gl.LinkProgram(programID)
-	gl.ValidateProgram(programID)
-	shader.getAllUniformLocations()
+	shaderProgram.programID = programID
+	shaderProgram.vertexShaderID = vertexShaderID
+	shaderProgram.fragmentShaderID = fragmentShaderID
+
+	return shaderProgram
+}
+
+func (shaderProgram *ShaderProgram) setup() {
+	gl.LinkProgram(shaderProgram.programID)
+	gl.ValidateProgram(shaderProgram.programID)
 }
 
 func (shader *ShaderProgram) getUniformLocation(name string) int32 {
@@ -44,12 +43,12 @@ func (shader *ShaderProgram) Start() {
 	gl.UseProgram(shader.programID)
 }
 
-func Stop() {
+func (shader *ShaderProgram) Stop() {
 	gl.UseProgram(0)
 }
 
 func (shader *ShaderProgram) CleanUp() {
-	Stop()
+	shader.Stop()
 	gl.DetachShader(shader.programID, shader.vertexShaderID)
 	gl.DetachShader(shader.programID, shader.fragmentShaderID)
 	gl.DeleteShader(shader.vertexShaderID)
