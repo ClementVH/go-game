@@ -14,11 +14,11 @@ type ShaderProgram struct {
 	fragmentShaderID uint32
 }
 
-func NewShaderProgram() ShaderProgram {
+func NewShaderProgram(vertexShader, fragmentShader string) ShaderProgram {
 	shaderProgram := ShaderProgram{0, 0, 0}
 
-	vertexShaderID := loadShader(gl.VERTEX_SHADER)
-	fragmentShaderID := loadShader(gl.FRAGMENT_SHADER)
+	vertexShaderID := loadShader(vertexShader, gl.VERTEX_SHADER)
+	fragmentShaderID := loadShader(fragmentShader, gl.FRAGMENT_SHADER)
 	programID := gl.CreateProgram()
 	gl.AttachShader(programID, vertexShaderID)
 	gl.AttachShader(programID, fragmentShaderID)
@@ -81,13 +81,7 @@ func loadMatrix(location int32, matrix mgl32.Mat4) {
 	gl.UniformMatrix4fv(location, 1, false, &matrix[0])
 }
 
-func loadShader(shaderType uint32) uint32 {
-	var shaderCode string
-	if shaderType == gl.FRAGMENT_SHADER {
-		shaderCode = FragmentShader
-	} else {
-		shaderCode = VertexShader
-	}
+func loadShader(shaderCode string, shaderType uint32) uint32 {
 	csources, free := gl.Strs(shaderCode)
 	shaderID := gl.CreateShader(shaderType)
 	gl.ShaderSource(shaderID, 1, csources, nil)

@@ -7,6 +7,8 @@ import (
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
+	"go-game/src/Terrains"
+	"go-game/src/Textures"
 	"go-game/src/ToolBox"
 
 	"github.com/go-gl/mathgl/mgl32"
@@ -36,10 +38,15 @@ func main() {
 		entities = append(entities, entity)
 	}
 	light := Entities.NewLight(
-		mgl32.Vec3{0, 100, 0},
+		mgl32.Vec3{50, 100, 0},
 		mgl32.Vec3{1, 1, 1},
 	)
 
+	texture := &Textures.ModelTexture{
+		TextureID: Loaders.LoadTexture("../res", "terrain-texture.png"),
+	}
+	terrain := Terrains.NewTerrain(0, -1, texture)
+	terrain2 := Terrains.NewTerrain(-1, -1, texture)
 
 	renderer := RenderEngine.NewMasterRenderer()
 	for !RenderEngine.Window.ShouldClose() {
@@ -48,11 +55,14 @@ func main() {
 			entity.IncreaseRotation(0, -0.01, 0)
 			renderer.ProcessEntity(entity)
 		}
+		renderer.ProcessTerrain(terrain)
+		renderer.ProcessTerrain(terrain2)
+
 		renderer.Render(light, camera)
 		RenderEngine.UpdateDisplay()
 	}
 
-	renderer.Shader.CleanUp()
+	renderer.CleanUp()
 	RenderEngine.CloseDisplay()
 }
 

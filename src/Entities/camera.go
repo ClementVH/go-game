@@ -11,14 +11,17 @@ type Camera struct {
 }
 
 func NewCamera() *Camera {
-	camera := Camera{}
+	camera := Camera{
+		mgl32.Vec3{0,10,0},
+		0, 0, 0,
+	}
 	camera.initCameraMovements()
 	return &camera
 }
 
 func (camera *Camera) Move(keyName string) {
 	if keyName == "z" {
-		camera.Position[2] += 0.4
+		camera.Position[1] += 0.4
 	}
 	if keyName == "d" {
 		camera.Position[0] += 0.4
@@ -27,7 +30,7 @@ func (camera *Camera) Move(keyName string) {
 		camera.Position[0] -= 0.4
 	}
 	if keyName == "s" {
-		camera.Position[2] -= 0.4
+		camera.Position[1] -= 0.4
 	}
 }
 

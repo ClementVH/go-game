@@ -1,4 +1,4 @@
-package RenderEngine
+package Loaders
 
 import (
 	"go-game/src/Models"

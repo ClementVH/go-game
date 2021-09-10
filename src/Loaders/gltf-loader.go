@@ -3,7 +3,6 @@ package Loaders
 import (
 	"encoding/binary"
 	"go-game/src/Models"
-	"go-game/src/RenderEngine"
 	"go-game/src/Textures"
 	"math"
 
@@ -32,7 +31,7 @@ func loadMesh(doc *gltf.Document, index int, folder string) *Models.TexturedMode
 	textureCoords := getFloats(doc, int(textureCoordsAccessorIndex))
 
 	return &Models.TexturedModel{
-		RawModel: RenderEngine.LoadToVAO(vertices, textureCoords, normals, indices),
+		RawModel: LoadToVAO(vertices, textureCoords, normals, indices),
 		Texture:  getTexture(doc, index, folder),
 	}
 }
@@ -43,7 +42,7 @@ func getTexture(doc *gltf.Document, index int, folder string) *Textures.ModelTex
 	imageUri := doc.Images[imageIndex].URI
 
 	return &Textures.ModelTexture{
-		TextureID: RenderEngine.LoadTexture(folder, imageUri),
+		TextureID: LoadTexture(folder, imageUri),
 	}
 }
 

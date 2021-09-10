@@ -14,7 +14,7 @@ type EntityRenderer struct {
 	shader           *Shaders.StaticShader
 }
 
-func NewRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityRenderer {
+func NewEntityRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityRenderer {
 	renderer := &EntityRenderer{
 		shader,
 	}
