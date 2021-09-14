@@ -25,14 +25,13 @@ func NewEntityRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityR
 	return renderer
 }
 
-func (renderer *EntityRenderer) Render(entities map[*Models.TexturedModel][]*Entities.Entity) {
-	for model, batch := range entities {
-		renderer.prepareTexturedModel(model)
-		for _, entity := range batch {
+func (renderer *EntityRenderer) Render(entities []*Entities.Entity) {
+	for _, entity := range entities {
+		for _, mesh := range entity.Meshes {
+			renderer.prepareTexturedModel(mesh)
 			renderer.prepareInstance(entity)
-			gl.DrawElements(gl.TRIANGLES, int32(model.RawModel.VertexCount), gl.UNSIGNED_INT, nil)
+			gl.DrawElements(gl.TRIANGLES, int32(mesh.RawModel.VertexCount), gl.UNSIGNED_INT, nil)
 		}
-		renderer.unbindTexturedModel(model)
 	}
 }
 

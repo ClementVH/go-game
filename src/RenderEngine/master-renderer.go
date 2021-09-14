@@ -2,7 +2,6 @@ package RenderEngine
 
 import (
 	"go-game/src/Entities"
-	"go-game/src/Models"
 	"go-game/src/Shaders"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
@@ -15,7 +14,7 @@ const FAR_PLANE = 1000
 
 type MasterRenderer struct {
 	StaticShader   *Shaders.StaticShader
-	entities map[*Models.TexturedModel][]*Entities.Entity
+	Entities[] *Entities.Entity
 	entityRenderer *EntityRenderer
 }
 
@@ -27,7 +26,7 @@ func NewMasterRenderer() *MasterRenderer {
 	projectionMatrix := createProjectionMatrix()
 	return &MasterRenderer{
 		shader,
-		make(map[*Models.TexturedModel][]*Entities.Entity),
+		make([]*Entities.Entity, 0, 1024),
 		NewEntityRenderer(shader, projectionMatrix),
 	}
 }
@@ -38,30 +37,14 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
-	renderer.entityRenderer.Render(renderer.entities)
+	renderer.entityRenderer.Render(renderer.Entities)
 	renderer.StaticShader.Stop()
-
-	renderer.entities = make(map[*Models.TexturedModel][]*Entities.Entity)
 }
 
 func (renderer *MasterRenderer) prepare() {
 	gl.Enable(gl.DEPTH_TEST)
 	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
-}
-
-func (renderer *MasterRenderer) ProcessEntity(entity *Entities.Entity) {
-	for _, mesh := range entity.Meshes {
-		var batch = renderer.entities[mesh]
-		if (batch != nil) {
-			batch = append(batch, entity)
-			renderer.entities[mesh] = batch
-		} else {
-			batch := make([]*Entities.Entity, 0)
-			batch = append(batch, entity)
-			renderer.entities[mesh] = batch
-		}
-	}
 }
 
 func (renderer *MasterRenderer) CleanUp() {

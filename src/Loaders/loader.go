@@ -4,6 +4,7 @@ import (
 	"go-game/src/Models"
 	"image"
 	"image/draw"
+	_ "image/jpeg"
 	_ "image/png"
 	"log"
 	"os"

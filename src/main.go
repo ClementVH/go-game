@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math/rand"
 	"runtime"
 
 	"go-game/src/Entities"
@@ -24,36 +23,27 @@ func main() {
 
 	camera := Entities.NewCamera()
 
-	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
+	renderer := RenderEngine.NewMasterRenderer()
 
-	entities := make([]*Entities.Entity, 0)
+	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
 
 	entity := Entities.NewEntity(
 		model,
 		mgl32.Vec3{0, 0, 0},
 		0, 0, 0, 1,
 	)
-	entities = append(entities, entity)
+	renderer.Entities = append(renderer.Entities, entity)
 	light := Entities.NewLight(
 		mgl32.Vec3{50, 100, 0},
 		mgl32.Vec3{1, 1, 1},
 	)
 
-	renderer := RenderEngine.NewMasterRenderer()
 	for !RenderEngine.Window.ShouldClose() {
 		ToolBox.FpsCount()
-		for _, entity := range entities {
-			renderer.ProcessEntity(entity)
-		}
-
 		renderer.Render(light, camera)
 		RenderEngine.UpdateDisplay()
 	}
 
 	renderer.CleanUp()
 	RenderEngine.CloseDisplay()
-}
-
-func randomFloat(min, max int) float32 {
-	return float32(min + rand.Intn(max-min+1))
 }
