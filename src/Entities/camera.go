@@ -13,7 +13,7 @@ type Camera struct {
 func NewCamera() *Camera {
 	camera := Camera{
 		mgl32.Vec3{0,10,0},
-		0, 0, 0,
+		90, 0, 0,
 	}
 	camera.initCameraMovements()
 	return &camera

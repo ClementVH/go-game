@@ -24,17 +24,16 @@ func main() {
 
 	camera := Entities.NewCamera()
 
-	model := Loaders.LoadGltf("../res/duck", "Duck.gltf")
+	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
 
 	entities := make([]*Entities.Entity, 0)
-	for i := 0; i < 100; i++ {
-		entity := Entities.NewEntity(
-			model,
-			mgl32.Vec3{randomFloat(-50, 50), randomFloat(-20, 5), randomFloat(-100, -50)},
-			0, 0, 0, 0.1,
-		)
-		entities = append(entities, entity)
-	}
+
+	entity := Entities.NewEntity(
+		model,
+		mgl32.Vec3{0, 0, 0},
+		0, 0, 0, 1,
+	)
+	entities = append(entities, entity)
 	light := Entities.NewLight(
 		mgl32.Vec3{50, 100, 0},
 		mgl32.Vec3{1, 1, 1},
@@ -44,7 +43,6 @@ func main() {
 	for !RenderEngine.Window.ShouldClose() {
 		ToolBox.FpsCount()
 		for _, entity := range entities {
-			entity.IncreaseRotation(0, -0.01, 0)
 			renderer.ProcessEntity(entity)
 		}
 
