@@ -31,6 +31,7 @@ func (renderer *EntityRenderer) Render(entities []*Entities.Entity) {
 			renderer.prepareTexturedModel(mesh)
 			renderer.prepareInstance(entity)
 			gl.DrawElements(gl.TRIANGLES, int32(mesh.RawModel.VertexCount), gl.UNSIGNED_INT, nil)
+			renderer.unbindTexturedModel(mesh)
 		}
 	}
 }
