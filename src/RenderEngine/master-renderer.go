@@ -52,5 +52,10 @@ func (renderer *MasterRenderer) CleanUp() {
 }
 
 func createProjectionMatrix() mgl32.Mat4 {
-	return mgl32.Perspective(mgl32.DegToRad(FOV), float32(640)/480, NEAR_PLANE, FAR_PLANE)
+	width, height := Window.GetSize()
+	var top float32 = 8;
+	var bottom = -top
+	var right = top * float32(width) / float32(height)
+	var left = -right
+	return mgl32.Ortho(left, right, bottom, top, -1000, 1000)
 }

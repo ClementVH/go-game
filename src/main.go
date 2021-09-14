@@ -33,6 +33,14 @@ func main() {
 		0, 0, 0, 1,
 	)
 	renderer.Entities = append(renderer.Entities, entity)
+
+	character := Entities.NewEntity(
+		Loaders.LoadGltf("../res/character", "character.gltf"),
+		mgl32.Vec3{8, 2, -8},
+		0, 0, 0, 1,
+	)
+	renderer.Entities = append(renderer.Entities, character)
+
 	light := Entities.NewLight(
 		mgl32.Vec3{50, 100, 0},
 		mgl32.Vec3{1, 1, 1},
