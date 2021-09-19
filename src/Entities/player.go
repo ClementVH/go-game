@@ -15,17 +15,17 @@ var Q_PRESSED = false
 var S_PRESSED = false
 var D_PRESSED = false
 
-type ICharacter interface {
+type IPlayer interface {
 	GetCamera()
 }
 
-type Character struct {
+type Player struct {
 	Entity
 	Camera *Camera
 	velocity mgl32.Vec2
 }
 
-func NewCharacter(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, RotZ, scale float32) *Character {
+func NewPlayer(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, RotZ, scale float32) *Player {
 	entity := Entity{
 		model,
 		position,
@@ -33,26 +33,26 @@ func NewCharacter(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY
 		scale,
 	}
 
-	character := &Character{
+	player := &Player{
 		entity,
 		NewCamera(position),
 		mgl32.Vec2{0, 0},
 	}
 
-	character.initCameraMovements();
+	player.initCameraMovements();
 
-	return character;
+	return player;
 }
 
-func (character *Character) Move() {
-	rotationMatrix := mgl32.Rotate2D(mgl32.DegToRad(character.Camera.Yaw))
-	velocity := character.velocity.Mul(Window.Delta)
+func (player *Player) Move() {
+	rotationMatrix := mgl32.Rotate2D(mgl32.DegToRad(player.Camera.Yaw))
+	velocity := player.velocity.Mul(Window.Delta)
 	x, z := rotationMatrix.Mul2x1(velocity).Elem()
-	character.IncreasePostion(x, 0, z)
-	character.Camera.IncreasePostion(x, 0, z)
+	player.IncreasePostion(x, 0, z)
+	player.Camera.IncreasePostion(x, 0, z)
 }
 
-func (character *Character) initCameraMovements() {
+func (player *Player) initCameraMovements() {
 	glfw.GetCurrentContext().SetKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
 		keyName := glfw.GetKeyName(key, scancode)
 
@@ -84,25 +84,25 @@ func (character *Character) initCameraMovements() {
 		}
 
 		if D_PRESSED {
-			character.velocity[0] = 1
+			player.velocity[0] = 1
 		} else if Q_PRESSED {
-			character.velocity[0] = -1
+			player.velocity[0] = -1
 		} else {
-			character.velocity[0] = 0
+			player.velocity[0] = 0
 		}
 
 		if Z_PRESSED {
-			character.velocity[1] = -1
+			player.velocity[1] = -1
 		} else if S_PRESSED {
-			character.velocity[1] = 1
+			player.velocity[1] = 1
 		} else {
-			character.velocity[1] = 0
+			player.velocity[1] = 0
 		}
 
-		if (character.velocity.Len() > 0) {
-			character.velocity = character.velocity.Normalize()
+		if (player.velocity.Len() > 0) {
+			player.velocity = player.velocity.Normalize()
 		}
 
-		character.velocity = character.velocity.Mul(RUN_SPEED)
+		player.velocity = player.velocity.Mul(RUN_SPEED)
 	})
 }

@@ -29,8 +29,8 @@ func NewChunkSystem() *ChunkSystem {
 }
 
 func (chunkSystem *ChunkSystem) Tick() {
-	posX := math.Floor(float64(Character.Position[0] / 16))
-	posZ := math.Floor(float64(Character.Position[2] / 16)) + 1
+	posX := math.Floor(float64(Player.Position[0] / 16))
+	posZ := math.Floor(float64(Player.Position[2] / 16)) + 1
 
 	startX := int(posX) - (DISPLAY_CHUNKS_SIZE / 2)
 	startZ := int(posZ) - (DISPLAY_CHUNKS_SIZE / 2)

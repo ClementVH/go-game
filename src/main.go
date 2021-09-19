@@ -39,13 +39,13 @@ func main() {
 		}
 	}
 
-	character := Entities.NewCharacter(
-		Loaders.LoadGltf("../res/character", "character.gltf"),
+	player := Entities.NewPlayer(
+		Loaders.LoadGltf("../res/player", "player.gltf"),
 		mgl32.Vec3{8, 2, -8},
 		0, 0, 0, 1,
 	)
-	Systems.Character = character
-	renderer.Entities = append(renderer.Entities, character)
+	Systems.Player = player
+	renderer.Entities = append(renderer.Entities, player)
 
 	light := Entities.NewLight(
 		mgl32.Vec3{50, 100, 0},
@@ -55,8 +55,8 @@ func main() {
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
 		chunkManager.Tick()
-		character.Move()
-		renderer.Render(light, character.Camera)
+		player.Move()
+		renderer.Render(light, player.Camera)
 		Window.UpdateDisplay()
 	}
 

@@ -61,8 +61,8 @@
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "character",
-            "uri" : "character.png"
+            "name" : "player",
+            "uri" : "player.png"
         }
     ],
     "accessors" : [
@@ -132,7 +132,7 @@
     "buffers" : [
         {
             "byteLength" : 840,
-            "uri" : "character.bin"
+            "uri" : "player.bin"
         }
     ]
 }

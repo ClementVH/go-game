@@ -2,13 +2,13 @@ package Systems
 
 import "go-game/src/Entities"
 
-var Character *Entities.Character
+var Player *Entities.Player
 
-type CharacterSystem struct {
+type PlayerSystem struct {
 	System
 }
 
-func NewCharacterSystem() *ChunkSystem {
+func NewPlayerSystem() *ChunkSystem {
 
 	return &ChunkSystem{
 		System: *NewSystem(),
