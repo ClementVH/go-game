@@ -3,6 +3,7 @@ package RenderEngine
 import (
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
+	"go-game/src/State"
 	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
@@ -38,6 +39,7 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
+	renderer.entityRenderer.Render(State.GetChunksToRender())
 	renderer.entityRenderer.Render(renderer.Entities)
 	renderer.StaticShader.Stop()
 }
@@ -54,7 +56,7 @@ func (renderer *MasterRenderer) CleanUp() {
 
 func createProjectionMatrix() mgl32.Mat4 {
 	width, height := Window.Window.GetSize()
-	var top float32 = 8;
+	var top float32 = 16;
 	var bottom = -top
 	var right = top * float32(width) / float32(height)
 	var left = -right

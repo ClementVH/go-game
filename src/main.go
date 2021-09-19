@@ -3,9 +3,11 @@ package main
 import (
 	"runtime"
 
+	"go-game/src/ChunkManager"
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
+	"go-game/src/State"
 	"go-game/src/ToolBox"
 	"go-game/src/Window"
 
@@ -22,22 +24,28 @@ func main() {
 
 	Window.CreateDisplay()
 
+	chunkManager := ChunkManager.NewChunkManager()
+
 	renderer := RenderEngine.NewMasterRenderer()
 
 	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
 
-	entity := Entities.NewEntity(
-		model,
-		mgl32.Vec3{0, 0, 0},
-		0, 0, 0, 1,
-	)
-	renderer.Entities = append(renderer.Entities, entity)
+	for x := 0; x < State.WORLD_CHUNKS_SIZE; x++ {
+		for z := 0; z < State.WORLD_CHUNKS_SIZE; z++ {
+			State.ChunkEntities[x * State.WORLD_CHUNKS_SIZE + z] = Entities.NewChunk(
+				model,
+				x - State.WORLD_CHUNKS_SIZE / 2,
+				z - State.WORLD_CHUNKS_SIZE / 2,
+			)
+		}
+	}
 
 	character := Entities.NewCharacter(
 		Loaders.LoadGltf("../res/character", "character.gltf"),
 		mgl32.Vec3{8, 2, -8},
 		0, 0, 0, 1,
 	)
+	State.Character = character
 	renderer.Entities = append(renderer.Entities, character)
 
 	light := Entities.NewLight(
@@ -47,6 +55,7 @@ func main() {
 
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
+		chunkManager.Tick()
 		character.Move()
 		renderer.Render(light, character.Camera)
 		Window.UpdateDisplay()
