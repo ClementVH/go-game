@@ -4,7 +4,6 @@ import (
 	"go-game/src/Entities"
 	"go-game/src/Models"
 	"go-game/src/Shaders"
-	"go-game/src/ToolBox"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
@@ -25,9 +24,9 @@ func NewEntityRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityR
 	return renderer
 }
 
-func (renderer *EntityRenderer) Render(entities []*Entities.Entity) {
+func (renderer *EntityRenderer) Render(entities []Entities.IEntity) {
 	for _, entity := range entities {
-		for _, mesh := range entity.Meshes {
+		for _, mesh := range entity.GetMeshes() {
 			renderer.prepareTexturedModel(mesh)
 			renderer.prepareInstance(entity)
 			gl.DrawElements(gl.TRIANGLES, int32(mesh.RawModel.VertexCount), gl.UNSIGNED_INT, nil)
@@ -54,12 +53,8 @@ func (renderer *EntityRenderer) unbindTexturedModel(model *Models.TexturedModel)
 	gl.BindVertexArray(0)
 }
 
-func (renderer *EntityRenderer) prepareInstance(entity *Entities.Entity) {
-	transformationMatrix := ToolBox.CreateTransformationMatrix(
-		entity.Position,
-		entity.RotX, entity.RotY, entity.RotZ,
-		entity.Scale,
-	)
+func (renderer *EntityRenderer) prepareInstance(entity Entities.IEntity) {
+	transformationMatrix := entity.GetTransformationMatrix()
 
 	renderer.shader.LoadTransformationMatrix(transformationMatrix)
 

@@ -3,6 +3,7 @@ package RenderEngine
 import (
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
+	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
@@ -14,7 +15,7 @@ const FAR_PLANE = 1000
 
 type MasterRenderer struct {
 	StaticShader   *Shaders.StaticShader
-	Entities[] *Entities.Entity
+	Entities[] Entities.IEntity
 	entityRenderer *EntityRenderer
 }
 
@@ -26,7 +27,7 @@ func NewMasterRenderer() *MasterRenderer {
 	projectionMatrix := createProjectionMatrix()
 	return &MasterRenderer{
 		shader,
-		make([]*Entities.Entity, 0, 1024),
+		make([]Entities.IEntity, 0, 1024),
 		NewEntityRenderer(shader, projectionMatrix),
 	}
 }
@@ -52,7 +53,7 @@ func (renderer *MasterRenderer) CleanUp() {
 }
 
 func createProjectionMatrix() mgl32.Mat4 {
-	width, height := Window.GetSize()
+	width, height := Window.Window.GetSize()
 	var top float32 = 8;
 	var bottom = -top
 	var right = top * float32(width) / float32(height)

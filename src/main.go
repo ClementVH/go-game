@@ -7,6 +7,7 @@ import (
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
 	"go-game/src/ToolBox"
+	"go-game/src/Window"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -19,9 +20,7 @@ func init() {
 
 func main() {
 
-	RenderEngine.CreateDisplay()
-
-	camera := Entities.NewCamera()
+	Window.CreateDisplay()
 
 	renderer := RenderEngine.NewMasterRenderer()
 
@@ -34,7 +33,7 @@ func main() {
 	)
 	renderer.Entities = append(renderer.Entities, entity)
 
-	character := Entities.NewEntity(
+	character := Entities.NewCharacter(
 		Loaders.LoadGltf("../res/character", "character.gltf"),
 		mgl32.Vec3{8, 2, -8},
 		0, 0, 0, 1,
@@ -46,12 +45,13 @@ func main() {
 		mgl32.Vec3{1, 1, 1},
 	)
 
-	for !RenderEngine.Window.ShouldClose() {
+	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
-		renderer.Render(light, camera)
-		RenderEngine.UpdateDisplay()
+		character.Move()
+		renderer.Render(light, character.Camera)
+		Window.UpdateDisplay()
 	}
 
 	renderer.CleanUp()
-	RenderEngine.CloseDisplay()
+	Window.CloseDisplay()
 }

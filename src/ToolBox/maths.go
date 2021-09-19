@@ -1,10 +1,15 @@
 package ToolBox
 
 import (
-	"go-game/src/Entities"
-
 	"github.com/go-gl/mathgl/mgl32"
 )
+
+type ICamera interface {
+	GetInfo() struct{
+		Pitch, Yaw float32
+		Position mgl32.Vec3
+	}
+}
 
 func CreateTransformationMatrix(translation mgl32.Vec3, rx, ry, rz, scale float32) mgl32.Mat4 {
 	matrix := mgl32.Ident4()
@@ -16,12 +21,13 @@ func CreateTransformationMatrix(translation mgl32.Vec3, rx, ry, rz, scale float3
 	return matrix
 }
 
-func CreateViewMatrix(camera *Entities.Camera) mgl32.Mat4 {
+func CreateViewMatrix(camera ICamera) mgl32.Mat4 {
+	info := camera.GetInfo()
 	matrix := mgl32.Ident4()
-	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(camera.Pitch), mgl32.Vec3{1, 0, 0}))
-	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(camera.Yaw), mgl32.Vec3{0, 1, 0}))
+	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(info.Pitch), mgl32.Vec3{1, 0, 0}))
+	matrix = matrix.Mul4(mgl32.HomogRotate3D(mgl32.DegToRad(info.Yaw), mgl32.Vec3{0, 1, 0}))
 
-	cameraPos := camera.Position
+	cameraPos := info.Position
 	matrix = matrix.Mul4(mgl32.Translate3D(-cameraPos.X(), -cameraPos.Y(), -cameraPos.Z()))
 	return matrix
 }

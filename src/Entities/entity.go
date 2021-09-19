@@ -2,9 +2,15 @@ package Entities
 
 import (
 	"go-game/src/Models"
+	"go-game/src/ToolBox"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
+
+type IEntity interface {
+	GetMeshes() []*Models.TexturedModel
+	GetTransformationMatrix() mgl32.Mat4
+}
 
 type Entity struct {
 	Meshes                  []*Models.TexturedModel
@@ -29,4 +35,16 @@ func (entity *Entity) IncreaseRotation(dx, dy, dz float32) {
 	entity.RotX += dx
 	entity.RotY += dy
 	entity.RotZ += dz
+}
+
+func (entity *Entity) GetMeshes() []*Models.TexturedModel {
+	return entity.Meshes
+}
+
+func (entity *Entity) GetTransformationMatrix() mgl32.Mat4 {
+	return ToolBox.CreateTransformationMatrix(
+		entity.Position,
+		entity.RotX, entity.RotY, entity.RotZ,
+		entity.Scale,
+	)
 }

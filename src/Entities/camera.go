@@ -1,51 +1,36 @@
 package Entities
 
 import (
-	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 )
 
+type ICamera interface {
+	GetInfo() struct{
+		Pitch, Yaw float32
+		Position mgl32.Vec3
+	}
+}
+
 type Camera struct {
-	Position         mgl32.Vec3
+	Entity
 	Pitch, Yaw, Roll float32
 }
 
-func NewCamera() *Camera {
+func NewCamera(position mgl32.Vec3) *Camera {
 	camera := Camera{
-		mgl32.Vec3{8,0,-8},
+		*NewEntity(nil, position, 0, 0, 0, 0),
 		35.264, 45, 0,
 	}
-	camera.initCameraMovements()
 	return &camera
 }
 
-func (camera *Camera) Move(keyName string) {
-	if keyName == "z" {
-		camera.Position[1] += 0.4
+func (camera *Camera) GetInfo() struct{
+	Pitch, Yaw float32
+	Position mgl32.Vec3
+}{
+	return struct{Pitch float32; Yaw float32; Position mgl32.Vec3}{
+		camera.Pitch,
+		camera.Yaw,
+		camera.Position,
 	}
-	if keyName == "d" {
-		camera.Position[0] += 0.4
-	}
-	if keyName == "q" {
-		camera.Position[0] -= 0.4
-	}
-	if keyName == "s" {
-		camera.Position[1] -= 0.4
-	}
-}
-
-func (camera *Camera) initCameraMovements() {
-	glfw.GetCurrentContext().SetKeyCallback(func(w *glfw.Window, key glfw.Key, scancode int, action glfw.Action, mods glfw.ModifierKey) {
-		keyName := glfw.GetKeyName(key, scancode)
-		switch keyName {
-		case "z":
-			camera.Move(keyName)
-		case "q":
-			camera.Move(keyName)
-		case "s":
-			camera.Move(keyName)
-		case "d":
-			camera.Move(keyName)
-		}
-	})
 }

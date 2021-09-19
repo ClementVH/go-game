@@ -1,4 +1,4 @@
-package RenderEngine
+package Window
 
 import (
 	"github.com/go-gl/gl/v3.3-core/gl"
@@ -6,6 +6,8 @@ import (
 )
 
 var Window *glfw.Window
+var LastFrameTime float32
+var Delta float32
 
 func CreateDisplay() {
 	var err error
@@ -29,13 +31,22 @@ func CreateDisplay() {
 	}
 
 	gl.Enable(gl.MULTISAMPLE)
+
+	LastFrameTime = getCurrentTime()
 }
 
 func UpdateDisplay() {
 	Window.SwapBuffers()
 	glfw.PollEvents()
+	currentFrameTime := getCurrentTime()
+	Delta = currentFrameTime - LastFrameTime
+	LastFrameTime = getCurrentTime()
 }
 
 func CloseDisplay() {
 	glfw.Terminate()
+}
+
+func getCurrentTime() float32 {
+	return float32(glfw.GetTime())
 }
