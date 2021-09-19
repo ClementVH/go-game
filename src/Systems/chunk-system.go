@@ -1,4 +1,4 @@
-package ChunkManager
+package Systems
 
 import (
 	"go-game/src/Entities"
@@ -7,24 +7,23 @@ import (
 	_ "math/bits"
 )
 
-type Manager interface {
-	Tick()
+type ChunkSystem struct {
+	System
 }
 
-type ChunkManager struct {
-}
-
-func NewChunkManager() *ChunkManager {
+func NewChunkSystem() *ChunkSystem {
 	chunks := make([][]Entities.ChunkPosition, State.DISPLAY_CHUNKS_SIZE)
 	for i := range chunks {
 		chunks[i] = make([]Entities.ChunkPosition, State.DISPLAY_CHUNKS_SIZE)
 	}
 	State.CurrentChunks = chunks
 
-	return &ChunkManager{}
+	return &ChunkSystem{
+		System: *NewSystem(),
+	}
 }
 
-func (chunkManager *ChunkManager) Tick() {
+func (chunkSystem *ChunkSystem) Tick() {
 	character := State.Character
 	posX := math.Floor(float64(character.Position[0] / 16))
 	posZ := math.Floor(float64(character.Position[2] / 16)) + 1

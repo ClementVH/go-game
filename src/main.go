@@ -3,11 +3,11 @@ package main
 import (
 	"runtime"
 
-	"go-game/src/ChunkManager"
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
 	"go-game/src/State"
+	"go-game/src/Systems"
 	"go-game/src/ToolBox"
 	"go-game/src/Window"
 
@@ -24,7 +24,7 @@ func main() {
 
 	Window.CreateDisplay()
 
-	chunkManager := ChunkManager.NewChunkManager()
+	chunkManager := Systems.NewChunkSystem()
 
 	renderer := RenderEngine.NewMasterRenderer()
 
