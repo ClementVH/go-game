@@ -2,7 +2,6 @@ package Systems
 
 import (
 	"go-game/src/Entities"
-	"go-game/src/State"
 	"math"
 	_ "math/bits"
 )
@@ -30,9 +29,8 @@ func NewChunkSystem() *ChunkSystem {
 }
 
 func (chunkSystem *ChunkSystem) Tick() {
-	character := State.Character
-	posX := math.Floor(float64(character.Position[0] / 16))
-	posZ := math.Floor(float64(character.Position[2] / 16)) + 1
+	posX := math.Floor(float64(Character.Position[0] / 16))
+	posZ := math.Floor(float64(Character.Position[2] / 16)) + 1
 
 	startX := int(posX) - (DISPLAY_CHUNKS_SIZE / 2)
 	startZ := int(posZ) - (DISPLAY_CHUNKS_SIZE / 2)

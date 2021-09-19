@@ -6,7 +6,6 @@ import (
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
 	"go-game/src/RenderEngine"
-	"go-game/src/State"
 	"go-game/src/Systems"
 	"go-game/src/ToolBox"
 	"go-game/src/Window"
@@ -45,7 +44,7 @@ func main() {
 		mgl32.Vec3{8, 2, -8},
 		0, 0, 0, 1,
 	)
-	State.Character = character
+	Systems.Character = character
 	renderer.Entities = append(renderer.Entities, character)
 
 	light := Entities.NewLight(
