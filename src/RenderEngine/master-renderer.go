@@ -3,7 +3,7 @@ package RenderEngine
 import (
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
-	"go-game/src/State"
+	"go-game/src/Systems"
 	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
@@ -39,7 +39,7 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
-	renderer.entityRenderer.Render(State.GetChunksToRender())
+	renderer.entityRenderer.Render(Systems.GetChunksToRender())
 	renderer.entityRenderer.Render(renderer.Entities)
 	renderer.StaticShader.Stop()
 }

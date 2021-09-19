@@ -30,12 +30,12 @@ func main() {
 
 	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
 
-	for x := 0; x < State.WORLD_CHUNKS_SIZE; x++ {
-		for z := 0; z < State.WORLD_CHUNKS_SIZE; z++ {
-			State.ChunkEntities[x * State.WORLD_CHUNKS_SIZE + z] = Entities.NewChunk(
+	for x := 0; x < Systems.WORLD_CHUNKS_SIZE; x++ {
+		for z := 0; z < Systems.WORLD_CHUNKS_SIZE; z++ {
+			Systems.ChunkEntities[x * Systems.WORLD_CHUNKS_SIZE + z] = Entities.NewChunk(
 				model,
-				x - State.WORLD_CHUNKS_SIZE / 2,
-				z - State.WORLD_CHUNKS_SIZE / 2,
+				x - Systems.WORLD_CHUNKS_SIZE / 2,
+				z - Systems.WORLD_CHUNKS_SIZE / 2,
 			)
 		}
 	}
