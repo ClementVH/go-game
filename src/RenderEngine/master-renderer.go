@@ -39,8 +39,9 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
-	renderer.entityRenderer.Render(Systems.GetChunksToRender())
-	renderer.entityRenderer.Render(renderer.Entities)
+	for _, system := range Systems.Systems {
+		renderer.entityRenderer.Render(system.GetEntities())
+	}
 	renderer.StaticShader.Stop()
 }
 
