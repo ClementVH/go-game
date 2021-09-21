@@ -29,7 +29,7 @@ func main() {
 	Systems.Systems = map[string]Systems.ISystem{
 		"CHUNK_SYSTEM": Systems.NewChunkSystem(),
 		"PLAYER_SYSTEM": playerSystem,
-		"MONSTER_SYSTEM": Systems.NewMonsterSystem(),
+		"WILD_MONSTER_SYSTEM": Systems.NewWildMonsterSystem(),
 	}
 
 	light := Entities.NewLight(
