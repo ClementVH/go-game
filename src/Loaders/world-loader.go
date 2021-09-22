@@ -2,13 +2,15 @@ package Loaders
 
 import (
 	"fmt"
+	"go-game/src/Entities"
 	"image"
 	"image/png"
 	"io"
 	"os"
+	"reflect"
 )
 
-func GetChunkPositions() []struct{X, Z int} {
+func GetZones() [][]Entities.ChunkPosition {
 	// You can register another format here
 	image.RegisterFormat("png", "png", png.Decode, png.DecodeConfig)
 
@@ -21,19 +23,36 @@ func GetChunkPositions() []struct{X, Z int} {
 
 	defer file.Close()
 
-	pixels, width, height, err := getPixels(file)
+	pixels, err := getPixels(file)
 
 	if err != nil {
 			fmt.Println("Error: Image could not be decoded")
 			os.Exit(1)
 	}
 
-	positions := make([]struct{X, Z int}, 0, width * height)
+	black := Pixel{0,0,0,255}
+	red := Pixel{255,0,0,255}
+	green := Pixel{0,255,0,255}
+	blue := Pixel{0,0,255,255}
+
+	positions := make([][]Entities.ChunkPosition, 4)
+	for i := range positions {
+		positions[i] = make([]Entities.ChunkPosition, 0)
+	}
 
 	for z, column := range pixels {
 		for x, pixel := range column {
-			if pixel.A > 0 {
-				positions = append(positions, struct{X, Z int}{x, z})
+			if reflect.DeepEqual(pixel, black) {
+				positions[0] = append(positions[0], Entities.ChunkPosition{X: x, Z: z})
+			}
+			if reflect.DeepEqual(pixel, red) {
+				positions[1] = append(positions[1], Entities.ChunkPosition{X: x, Z: z})
+			}
+			if reflect.DeepEqual(pixel, green) {
+				positions[2] = append(positions[2], Entities.ChunkPosition{X: x, Z: z})
+			}
+			if reflect.DeepEqual(pixel, blue) {
+				positions[3] = append(positions[3], Entities.ChunkPosition{X: x, Z: z})
 			}
 		}
 	}
@@ -42,11 +61,11 @@ func GetChunkPositions() []struct{X, Z int} {
 }
 
 // Get the bi-dimensional pixel array
-func getPixels(file io.Reader) ([][]Pixel, int, int, error) {
+func getPixels(file io.Reader) ([][]Pixel, error) {
 	img, _, err := image.Decode(file)
 
 	if err != nil {
-			return nil, 0, 0, err
+			return nil, err
 	}
 
 	bounds := img.Bounds()
@@ -61,7 +80,7 @@ func getPixels(file io.Reader) ([][]Pixel, int, int, error) {
 			pixels = append(pixels, row)
 	}
 
-	return pixels, width, height, nil
+	return pixels, nil
 }
 
 // img.At(x, y).RGBA() returns four uint32 values; we want a Pixel

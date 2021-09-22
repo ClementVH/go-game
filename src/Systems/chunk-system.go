@@ -12,6 +12,8 @@ var WORLD_CHUNKS_SIZE = 256
 
 var currentChunks [][]Entities.ChunkPosition
 var chunkEntities [][]*Entities.Chunk
+var zones [][]Entities.ChunkPosition
+var currentZone int
 
 type ChunkSystem struct {
 	System
@@ -24,23 +26,9 @@ func NewChunkSystem() *ChunkSystem {
 	}
 	currentChunks = chunksPositions
 
-	chunks := make([][]*Entities.Chunk, WORLD_CHUNKS_SIZE)
-	for i := range chunks {
-		chunks[i] = make([]*Entities.Chunk, WORLD_CHUNKS_SIZE)
-	}
-	chunkEntities = chunks
+	zones = Loaders.GetZones()
 
-	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
-
-	positions := Loaders.GetChunkPositions()
-
-	for _, position := range positions {
-		chunkEntities[position.X][position.Z] = Entities.NewChunk(
-			model,
-			position.X,
-			position.Z,
-		)
-	}
+	loadZone(getZoneIndex())
 
 	return &ChunkSystem{
 		System: *NewSystem(),
@@ -48,6 +36,11 @@ func NewChunkSystem() *ChunkSystem {
 }
 
 func (chunkSystem *ChunkSystem) Tick() {
+	zoneIndex := getZoneIndex()
+	if (zoneIndex != currentZone) {
+		loadZone(zoneIndex)
+	}
+
 	posX := math.Floor(float64(player.Position[0] / 16))
 	posZ := math.Floor(float64(player.Position[2] / 16))
 
@@ -69,7 +62,7 @@ func (chunkSystem *ChunkSystem) GetEntities() []Entities.IEntity {
 
 	for _, chunks := range currentChunks {
 		for _, chunk := range chunks {
-			if (chunk.X > 0 && chunk.Z > 0) {
+			if (chunk.X >= 0 && chunk.Z >= 0) {
 				entity := chunkEntities[chunk.X][chunk.Z]
 				if (entity != nil) {
 					entities = append(entities, entity)
@@ -79,4 +72,39 @@ func (chunkSystem *ChunkSystem) GetEntities() []Entities.IEntity {
 	}
 
 	return entities
+}
+
+func loadZone(zoneIndex int) {
+	currentZone = zoneIndex
+
+	chunks := make([][]*Entities.Chunk, WORLD_CHUNKS_SIZE)
+	for i := range chunks {
+		chunks[i] = make([]*Entities.Chunk, WORLD_CHUNKS_SIZE)
+	}
+	chunkEntities = chunks
+
+	model := Loaders.LoadGltf("../res/plane", "plane.gltf")
+
+	for _, position := range zones[zoneIndex] {
+		chunkEntities[position.X][position.Z] = Entities.NewChunk(
+			model,
+			position.X,
+			position.Z,
+		)
+	}
+}
+
+func getZoneIndex() int {
+	var zoneIndex = 0
+	for i, zone := range zones {
+		for _, position := range zone {
+			diffX := player.Position.X() - float32(position.X) * 16
+			diffZ := player.Position.Z() - float32(position.Z) * 16
+			if diffX >=0 && diffX < 16 && diffZ >= 0 && diffZ < 16 {
+				zoneIndex = i
+			}
+		}
+	}
+
+	return zoneIndex
 }

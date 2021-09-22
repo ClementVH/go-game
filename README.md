@@ -10,3 +10,15 @@ run : ```go get -u github.com/go-gl/gl/v3.3-core/gl```
 and : ```go get -u github.com/go-gl/glfw/v3.3/glfw```
 
 run : ```go run ./main.go```
+
+
+
+# Tips
+
+## Edit origin of model in blender
+- Ctrl + .
+- Move
+- Move to desired location
+
+## have well oriented models
+- in blender y should be toward negative
