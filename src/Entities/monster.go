@@ -6,6 +6,11 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
+type MonsterPosition struct {
+	X int
+	Z int
+}
+
 type Monster struct {
 	Entity
 }

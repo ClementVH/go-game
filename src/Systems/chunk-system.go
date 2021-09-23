@@ -7,7 +7,7 @@ import (
 	_ "math/bits"
 )
 
-var DISPLAY_CHUNKS_SIZE = 7
+var DISPLAY_CHUNKS_SIZE = 8
 var WORLD_CHUNKS_SIZE = 256
 
 var currentChunks [][]Entities.ChunkPosition
@@ -26,7 +26,7 @@ func NewChunkSystem() *ChunkSystem {
 	}
 	currentChunks = chunksPositions
 
-	zones = Loaders.GetZones()
+	zones = Loaders.GetChunkZones()
 
 	loadZone(getZoneIndex())
 

@@ -25,11 +25,13 @@ func main() {
 	renderer := RenderEngine.NewMasterRenderer()
 
 	playerSystem := Systems.NewPlayerSystem()
+	chunkSystem := Systems.NewChunkSystem()
+	wildMonsterSystem := Systems.NewWildMonsterSystem()
 
 	Systems.Systems = map[string]Systems.ISystem{
-		"CHUNK_SYSTEM": Systems.NewChunkSystem(),
+		"CHUNK_SYSTEM": chunkSystem,
 		"PLAYER_SYSTEM": playerSystem,
-		"WILD_MONSTER_SYSTEM": Systems.NewWildMonsterSystem(),
+		"WILD_MONSTER_SYSTEM": wildMonsterSystem,
 	}
 
 	light := Entities.NewLight(

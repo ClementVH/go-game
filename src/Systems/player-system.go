@@ -21,7 +21,7 @@ func NewPlayerSystem() *PlayerSystem {
 
 	player = Entities.NewPlayer(
 		Loaders.LoadGltf("../res/player", "player.gltf"),
-		mgl32.Vec3{8, 2, 8},
+		mgl32.Vec3{43 * 16 + 8, 2, 46 * 16 + 8},
 		0, 0, 0, 1,
 	)
 
