@@ -35,8 +35,7 @@ func NewPlayer(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, R
 
 	player := &Player{
 		entity,
-		// NewCamera(mgl32.Vec3{position.X() - 25, position.Y() + 25, position.Z() + 25}),
-		NewCamera(mgl32.Vec3{position.X(), position.Y() + 25, position.Z()}),
+		NewCamera(mgl32.Vec3{position.X() - 25, position.Y() + 25, position.Z() + 25}),
 		mgl32.Vec2{0, 0},
 	}
 

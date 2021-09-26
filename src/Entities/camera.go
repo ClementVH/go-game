@@ -20,8 +20,7 @@ type Camera struct {
 func NewCamera(position mgl32.Vec3) *Camera {
 	camera := Camera{
 		*NewEntity(nil, position, 0, 0, 0, 0),
-		// 35.264, 45, 0,
-		90, 45, 0,
+		35.264, 45, 0,
 	}
 	return &camera
 }

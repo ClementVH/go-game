@@ -36,8 +36,8 @@ func (wildMonsterSystem *WildMonsterSystem) Tick() {
 
 func (wildMonsterSystem *WildMonsterSystem) GetEntities() []Entities.IEntity {
 	entities := make([]Entities.IEntity, 0, 256)
-	playerChunkX := math.Floor(float64(player.Position.X()) / 16)
-	playerChunkZ := math.Floor(float64(player.Position.Z()) / 16)
+	playerChunkX := math.Floor(float64(Player.Position.X()) / 16)
+	playerChunkZ := math.Floor(float64(Player.Position.Z()) / 16)
 
 	for _, group := range wildMonsterGroups {
 		for _, wildMonster := range group {

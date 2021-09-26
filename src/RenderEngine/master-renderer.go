@@ -4,6 +4,7 @@ import (
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
 	"go-game/src/Systems"
+	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
@@ -12,6 +13,8 @@ import (
 const FOV = 70
 const NEAR_PLANE = 0.1
 const FAR_PLANE = 1000
+
+const PROJECTION = "ORTHO"
 
 type MasterRenderer struct {
 	StaticShader   *Shaders.StaticShader
@@ -57,11 +60,14 @@ func (renderer *MasterRenderer) CleanUp() {
 }
 
 func createProjectionMatrix() mgl32.Mat4 {
-	return mgl32.Perspective(mgl32.DegToRad(FOV), float32(640)/480, NEAR_PLANE, FAR_PLANE)
-	// width, height := Window.Window.GetSize()
-	// var top float32 = 16;
-	// var bottom = -top
-	// var right = top * float32(width) / float32(height)
-	// var left = -right
-	// return mgl32.Ortho(left, right, bottom, top, -1000, 1000)
+	if PROJECTION == "ORTHO" {
+		width, height := Window.Window.GetSize()
+		var top float32 = 16;
+		var bottom = -top
+		var right = top * float32(width) / float32(height)
+		var left = -right
+		return mgl32.Ortho(left, right, bottom, top, 0.001, 1000)
+	} else {
+		return mgl32.Perspective(mgl32.DegToRad(FOV), float32(640)/480, NEAR_PLANE, FAR_PLANE)
+	}
 }

@@ -6,6 +6,7 @@ import (
 	"runtime"
 
 	"go-game/src/Entities"
+	"go-game/src/Raycast"
 	"go-game/src/RenderEngine"
 	"go-game/src/Systems"
 	"go-game/src/ToolBox"
@@ -41,7 +42,7 @@ func main() {
 		mgl32.Vec3{1, 1, 1},
 	)
 
-	raycast := ToolBox.NewRaycast(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
+	raycast := Raycast.NewRaycast(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
 
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
@@ -50,7 +51,7 @@ func main() {
 		}
 		raycast.Update()
 
-		var startPos = playerSystem.GetPlayer().Camera.Position
+		var startPos = raycast.RayOrigin
 		var minMul float32 = 0
 		var middleMul float32 = 50
 		var maxMul float32 = 100

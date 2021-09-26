@@ -41,8 +41,8 @@ func (chunkSystem *ChunkSystem) Tick() {
 		loadZone(zoneIndex)
 	}
 
-	posX := math.Floor(float64(player.Position[0] / 16))
-	posZ := math.Floor(float64(player.Position[2] / 16))
+	posX := math.Floor(float64(Player.Position[0] / 16))
+	posZ := math.Floor(float64(Player.Position[2] / 16))
 
 	startX := int(posX) - (DISPLAY_CHUNKS_SIZE / 2)
 	startZ := int(posZ) - (DISPLAY_CHUNKS_SIZE / 2)
@@ -98,8 +98,8 @@ func getZoneIndex() int {
 	var zoneIndex = 0
 	for i, zone := range zones {
 		for _, position := range zone {
-			diffX := player.Position.X() - float32(position.X) * 16
-			diffZ := player.Position.Z() - float32(position.Z) * 16
+			diffX := Player.Position.X() - float32(position.X) * 16
+			diffZ := Player.Position.Z() - float32(position.Z) * 16
 			if diffX >=0 && diffX < 16 && diffZ >= 0 && diffZ < 16 {
 				zoneIndex = i
 			}
