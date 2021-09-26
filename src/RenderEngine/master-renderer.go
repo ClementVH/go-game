@@ -4,7 +4,6 @@ import (
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
 	"go-game/src/Systems"
-	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
 	"github.com/go-gl/mathgl/mgl32"
@@ -18,6 +17,7 @@ type MasterRenderer struct {
 	StaticShader   *Shaders.StaticShader
 	Entities[] Entities.IEntity
 	entityRenderer *EntityRenderer
+	ProjectionMatrix mgl32.Mat4
 }
 
 func NewMasterRenderer() *MasterRenderer {
@@ -30,6 +30,7 @@ func NewMasterRenderer() *MasterRenderer {
 		shader,
 		make([]Entities.IEntity, 0, 1024),
 		NewEntityRenderer(shader, projectionMatrix),
+		projectionMatrix,
 	}
 }
 
@@ -56,10 +57,11 @@ func (renderer *MasterRenderer) CleanUp() {
 }
 
 func createProjectionMatrix() mgl32.Mat4 {
-	width, height := Window.Window.GetSize()
-	var top float32 = 16;
-	var bottom = -top
-	var right = top * float32(width) / float32(height)
-	var left = -right
-	return mgl32.Ortho(left, right, bottom, top, -1000, 1000)
+	return mgl32.Perspective(mgl32.DegToRad(FOV), float32(640)/480, NEAR_PLANE, FAR_PLANE)
+	// width, height := Window.Window.GetSize()
+	// var top float32 = 16;
+	// var bottom = -top
+	// var right = top * float32(width) / float32(height)
+	// var left = -right
+	// return mgl32.Ortho(left, right, bottom, top, -1000, 1000)
 }

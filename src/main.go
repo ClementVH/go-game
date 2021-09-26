@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"math"
 	"runtime"
 
 	"go-game/src/Entities"
@@ -39,11 +41,33 @@ func main() {
 		mgl32.Vec3{1, 1, 1},
 	)
 
+	raycast := ToolBox.NewRaycast(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
+
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
 		for _, system := range Systems.Systems {
 			system.Tick()
 		}
+		raycast.Update()
+
+		var startPos = playerSystem.GetPlayer().Camera.Position
+		var minMul float32 = 0
+		var middleMul float32 = 50
+		var maxMul float32 = 100
+		var endPos = startPos.Add(raycast.Ray.Mul(middleMul))
+
+		for i := 0; i < 200; i++ {
+			if endPos.Y() < 0 {
+				maxMul = middleMul
+			} else if endPos.Y() >= 0 {
+				minMul = middleMul
+			}
+			middleMul = minMul + (maxMul - minMul) / 2
+			endPos = startPos.Add(raycast.Ray.Mul(middleMul))
+		}
+
+		fmt.Println(math.Floor(float64(endPos.X()) / 16), math.Floor(float64(endPos.Z()) / 16))
+
 		renderer.Render(light, playerSystem.GetPlayer().Camera)
 		Window.UpdateDisplay()
 	}

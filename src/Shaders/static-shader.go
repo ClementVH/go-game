@@ -2,7 +2,6 @@ package Shaders
 
 import (
 	"go-game/src/Entities"
-	"go-game/src/ToolBox"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -47,7 +46,7 @@ func (shader *StaticShader) LoadProjectionMatrix(projection mgl32.Mat4) {
 }
 
 func (shader *StaticShader) LoadViewMatrix(camera *Entities.Camera) {
-	matrix := ToolBox.CreateViewMatrix(camera)
+	matrix := camera.GetViewMatrix()
 	loadMatrix(shader.viewMatrix, matrix)
 }
 
