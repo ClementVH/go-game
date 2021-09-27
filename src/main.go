@@ -1,7 +1,9 @@
 package main
 
 import (
+	"math/rand"
 	"runtime"
+	"time"
 
 	"go-game/src/Entities"
 	"go-game/src/GUI"
@@ -21,6 +23,7 @@ func init() {
 }
 
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
 
 	Window.CreateDisplay()
 
