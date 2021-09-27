@@ -22,9 +22,11 @@ func NewWildMonsterSystem() *WildMonsterSystem {
 
 	loadSpawnZone(getZoneIndex())
 
-	return &WildMonsterSystem{
+	system := &WildMonsterSystem{
 		System: *NewSystem(),
 	}
+
+	return system
 }
 
 func (wildMonsterSystem *WildMonsterSystem) Tick() {

@@ -15,10 +15,6 @@ var Q_PRESSED = false
 var S_PRESSED = false
 var D_PRESSED = false
 
-type IPlayer interface {
-	GetCamera()
-}
-
 type Player struct {
 	Entity
 	Camera   *Camera

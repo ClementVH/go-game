@@ -3,24 +3,18 @@ package MousePicker
 import (
 	"errors"
 	"go-game/src/Entities"
-	"go-game/src/Systems"
-
-	"github.com/go-gl/mathgl/mgl32"
+	"go-game/src/State"
 )
 
 var MonsterGroupPicker MousePicker
 
-func InitMonsterGroupPicker(camera *Entities.Camera, projectionMatrix mgl32.Mat4) {
-	getPicker(camera, projectionMatrix)
-}
-
-func (picker *MousePicker) GetMonsterGroup() (interface{}, error) {
-	wildMonsterSystem := Systems.Systems["WILD_MONSTER_SYSTEM"].(*Systems.WildMonsterSystem)
+func (picker *MousePicker) GetMonsterGroup() ([]*Entities.Monster, error) {
+	wildMonsterSystem := State.Systems.WildMonsterSystem
 
 	var startPos = picker.RayOrigin
 	var currPos = startPos
 	var distance float32 = 10000
-	var res interface{}
+	var res []*Entities.Monster
 	var currIt = 50
 
 	groups := wildMonsterSystem.GetGroups()

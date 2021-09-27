@@ -5,8 +5,8 @@ import (
 
 	"go-game/src/Entities"
 	"go-game/src/GUI"
-	"go-game/src/MousePicker"
 	"go-game/src/RenderEngine"
+	"go-game/src/State"
 	"go-game/src/Systems"
 	"go-game/src/ToolBox"
 	"go-game/src/Window"
@@ -26,34 +26,24 @@ func main() {
 
 	renderer := RenderEngine.NewMasterRenderer()
 
-	playerSystem := Systems.NewPlayerSystem()
-	chunkSystem := Systems.NewChunkSystem()
-	wildMonsterSystem := Systems.NewWildMonsterSystem()
-
-	Systems.Systems = map[string]Systems.ISystem{
-		"CHUNK_SYSTEM":        chunkSystem,
-		"PLAYER_SYSTEM":       playerSystem,
-		"WILD_MONSTER_SYSTEM": wildMonsterSystem,
-	}
+	State.Systems.SetPlayerSystem(Systems.NewPlayerSystem())
+	State.Systems.SetChunkSystem(Systems.NewChunkSystem())
+	State.Systems.SetWildMonsterSystem(Systems.NewWildMonsterSystem())
+	gui := GUI.NewGUI()
 
 	light := Entities.NewLight(
 		mgl32.Vec3{3333, 10000, -3333},
 		mgl32.Vec3{1, 1, 1},
 	)
 
-	gui := GUI.NewGUI()
-
-	MousePicker.InitEntityPicker(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
-
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
-		for _, system := range Systems.Systems {
+		for _, system := range State.Systems.GetAll() {
 			system.Tick()
 		}
 		gui.Update()
-		MousePicker.Picker.Update()
 
-		renderer.Render(light, playerSystem.GetPlayer().Camera)
+		renderer.Render(light, State.Camera.Camera)
 		Window.UpdateDisplay()
 	}
 

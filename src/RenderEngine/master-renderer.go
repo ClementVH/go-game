@@ -4,7 +4,7 @@ import (
 	"go-game/src/Constants"
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
-	"go-game/src/Systems"
+	"go-game/src/State"
 	"go-game/src/Window"
 
 	"github.com/go-gl/gl/v3.3-core/gl"
@@ -17,7 +17,6 @@ const FAR_PLANE = 1000
 
 type MasterRenderer struct {
 	StaticShader     *Shaders.StaticShader
-	Entities         []Entities.IEntity
 	entityRenderer   *EntityRenderer
 	ProjectionMatrix mgl32.Mat4
 }
@@ -30,7 +29,6 @@ func NewMasterRenderer() *MasterRenderer {
 	projectionMatrix := createProjectionMatrix()
 	return &MasterRenderer{
 		shader,
-		make([]Entities.IEntity, 0, 1024),
 		NewEntityRenderer(shader, projectionMatrix),
 		projectionMatrix,
 	}
@@ -42,7 +40,7 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
-	for _, system := range Systems.Systems {
+	for _, system := range State.Systems.GetAll() {
 		renderer.entityRenderer.Render(system.GetEntities())
 	}
 	renderer.StaticShader.Stop()

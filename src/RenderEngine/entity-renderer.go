@@ -10,7 +10,7 @@ import (
 )
 
 type EntityRenderer struct {
-	shader           *Shaders.StaticShader
+	shader *Shaders.StaticShader
 }
 
 func NewEntityRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityRenderer {

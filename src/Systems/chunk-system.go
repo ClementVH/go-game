@@ -37,7 +37,7 @@ func NewChunkSystem() *ChunkSystem {
 
 func (chunkSystem *ChunkSystem) Tick() {
 	zoneIndex := getZoneIndex()
-	if (zoneIndex != currentZone) {
+	if zoneIndex != currentZone {
 		loadZone(zoneIndex)
 	}
 
@@ -58,13 +58,13 @@ func (chunkSystem *ChunkSystem) Tick() {
 }
 
 func (chunkSystem *ChunkSystem) GetEntities() []Entities.IEntity {
-	entities := make([]Entities.IEntity, 0, DISPLAY_CHUNKS_SIZE * DISPLAY_CHUNKS_SIZE)
+	entities := make([]Entities.IEntity, 0, DISPLAY_CHUNKS_SIZE*DISPLAY_CHUNKS_SIZE)
 
 	for _, chunks := range currentChunks {
 		for _, chunk := range chunks {
-			if (chunk.X >= 0 && chunk.Z >= 0) {
+			if chunk.X >= 0 && chunk.Z >= 0 {
 				entity := chunkEntities[chunk.X][chunk.Z]
-				if (entity != nil) {
+				if entity != nil {
 					entities = append(entities, entity)
 				}
 			}
@@ -98,9 +98,9 @@ func getZoneIndex() int {
 	var zoneIndex = 0
 	for i, zone := range zones {
 		for _, position := range zone {
-			diffX := Player.Position.X() - float32(position.X) * 16
-			diffZ := Player.Position.Z() - float32(position.Z) * 16
-			if diffX >=0 && diffX < 16 && diffZ >= 0 && diffZ < 16 {
+			diffX := Player.Position.X() - float32(position.X)*16
+			diffZ := Player.Position.Z() - float32(position.Z)*16
+			if diffX >= 0 && diffX < 16 && diffZ >= 0 && diffZ < 16 {
 				zoneIndex = i
 			}
 		}

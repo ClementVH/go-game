@@ -2,8 +2,7 @@ package GUI
 
 import (
 	"fmt"
-	"go-game/src/Entities"
-	"go-game/src/MousePicker"
+	"go-game/src/State"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 )
@@ -16,10 +15,9 @@ func newMonsterGroupHover() MonsterGroupHover {
 	glfw.GetCurrentContext().SetMouseButtonCallback(func(w *glfw.Window, button glfw.MouseButton, action glfw.Action, mod glfw.ModifierKey) {
 
 		if button == glfw.MouseButton1 && action == glfw.Release {
-			var _group, _ = MousePicker.Picker.GetMonsterGroup()
+			var group, _ = State.GUI.MousePicker.GetMonsterGroup()
 
-			if _group != nil {
-				group := _group.([]*Entities.Monster)
+			if group != nil {
 				fmt.Println(group[0].Position)
 			}
 		}
