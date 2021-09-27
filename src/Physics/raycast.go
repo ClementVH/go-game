@@ -1,27 +1,22 @@
-package ToolBox
+package Physics
 
 import (
 	"go-game/src/Constants"
+	"go-game/src/Entities"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
 )
-
-type ICamera interface {
-	GetViewMatrix() mgl32.Mat4
-	GetTargetPosition() mgl32.Vec3
-	GetPosition() mgl32.Vec3
-}
 
 type Raycast struct {
 	Ray              mgl32.Vec3
 	RayOrigin        mgl32.Vec3
 	projectionMatrix mgl32.Mat4
 	viewMatrix       mgl32.Mat4
-	camera           ICamera
+	camera           *Entities.Camera
 }
 
-func NewRaycast(camera ICamera, projectionMatrix mgl32.Mat4) Raycast {
+func NewRaycast(camera *Entities.Camera, projectionMatrix mgl32.Mat4) Raycast {
 	return Raycast{
 		mgl32.Vec3{},
 		mgl32.Vec3{},

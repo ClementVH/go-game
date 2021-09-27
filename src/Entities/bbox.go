@@ -6,13 +6,9 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-type IBBox interface {
-	GetSignedDistance(position mgl32.Vec3) float32
-}
-
 type BBox struct {
 	position mgl32.Vec3
-	bounds mgl32.Vec3
+	bounds   mgl32.Vec3
 }
 
 func (bbox *BBox) GetSignedDistance(pos mgl32.Vec3) float32 {
