@@ -21,7 +21,7 @@ type IPlayer interface {
 
 type Player struct {
 	Entity
-	Camera *Camera
+	Camera   *Camera
 	velocity mgl32.Vec2
 }
 
@@ -41,9 +41,9 @@ func NewPlayer(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, R
 
 	player.Camera = NewCamera(mgl32.Vec3{position.X() - 25, position.Y() + 25, position.Z() + 25}, player)
 
-	player.initCameraMovements();
+	player.initCameraMovements()
 
-	return player;
+	return player
 }
 
 func (player *Player) Move() {
@@ -101,7 +101,7 @@ func (player *Player) initCameraMovements() {
 			player.velocity[1] = 0
 		}
 
-		if (player.velocity.Len() > 0) {
+		if player.velocity.Len() > 0 {
 			player.velocity = player.velocity.Normalize()
 		}
 

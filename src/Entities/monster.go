@@ -13,6 +13,7 @@ type MonsterPosition struct {
 
 type Monster struct {
 	Entity
+	BBox BBox
 }
 
 func NewMonster(model []*Models.TexturedModel, position mgl32.Vec3) *Monster {
@@ -22,9 +23,19 @@ func NewMonster(model []*Models.TexturedModel, position mgl32.Vec3) *Monster {
 		0, 0, 0, 1,
 	}
 
+	bbox := BBox{
+		position,
+		mgl32.Vec3{1, 1, 1},
+	}
+
 	monster := &Monster{
 		entity,
+		bbox,
 	}
 
 	return monster
+}
+
+func (monster *Monster) GetSignedDistance(position mgl32.Vec3) float32 {
+	return monster.BBox.GetSignedDistance(position)
 }

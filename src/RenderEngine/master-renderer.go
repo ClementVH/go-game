@@ -16,9 +16,9 @@ const NEAR_PLANE = 0.1
 const FAR_PLANE = 1000
 
 type MasterRenderer struct {
-	StaticShader   *Shaders.StaticShader
-	Entities[] Entities.IEntity
-	entityRenderer *EntityRenderer
+	StaticShader     *Shaders.StaticShader
+	Entities         []Entities.IEntity
+	entityRenderer   *EntityRenderer
 	ProjectionMatrix mgl32.Mat4
 }
 
@@ -61,7 +61,7 @@ func (renderer *MasterRenderer) CleanUp() {
 func createProjectionMatrix() mgl32.Mat4 {
 	if Constants.PROJECTION == "ORTHO" {
 		width, height := Window.Window.GetSize()
-		var top float32 = 16;
+		var top float32 = 16
 		var bottom = -top
 		var right = top * float32(width) / float32(height)
 		var left = -right

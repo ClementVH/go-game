@@ -29,7 +29,7 @@ func NewWildMonsterSystem() *WildMonsterSystem {
 
 func (wildMonsterSystem *WildMonsterSystem) Tick() {
 	zoneIndex := getZoneIndex()
-	if (zoneIndex != currentSpawnZone) {
+	if zoneIndex != currentSpawnZone {
 		loadSpawnZone(zoneIndex)
 	}
 }
@@ -44,11 +44,11 @@ func (wildMonsterSystem *WildMonsterSystem) GetEntities() []Entities.IEntity {
 			monsterChunkX := math.Floor(float64(wildMonster.Position.X()) / 16)
 			monsterChunkZ := math.Floor(float64(wildMonster.Position.Z()) / 16)
 
-			if monsterChunkX > playerChunkX - float64(DISPLAY_CHUNKS_SIZE / 2) &&
-				monsterChunkX < playerChunkX + float64(DISPLAY_CHUNKS_SIZE / 2) &&
+			if monsterChunkX > playerChunkX-float64(DISPLAY_CHUNKS_SIZE/2) &&
+				monsterChunkX < playerChunkX+float64(DISPLAY_CHUNKS_SIZE/2) &&
 
-				monsterChunkZ > playerChunkZ - float64(DISPLAY_CHUNKS_SIZE / 2) &&
-				monsterChunkZ < playerChunkZ + float64(DISPLAY_CHUNKS_SIZE / 2) {
+				monsterChunkZ > playerChunkZ-float64(DISPLAY_CHUNKS_SIZE/2) &&
+				monsterChunkZ < playerChunkZ+float64(DISPLAY_CHUNKS_SIZE/2) {
 
 				entities = append(entities, wildMonster)
 			}
@@ -70,14 +70,14 @@ func loadSpawnZone(zoneIndex int) {
 
 		group := make([]*Entities.Monster, 0, 1)
 
-		if (random < 20) {
+		if random < 20 {
 
 			wildMonster := Entities.NewMonster(
 				monsterModel,
 				mgl32.Vec3{
-					float32(position.X * 16 + 8),
+					float32(position.X*16 + 8),
 					2,
-					float32(position.Z * 16 + 8),
+					float32(position.Z*16 + 8),
 				},
 			)
 			group = append(group, wildMonster)
@@ -86,4 +86,29 @@ func loadSpawnZone(zoneIndex int) {
 		wildMonsterGroups = append(wildMonsterGroups, group)
 	}
 
+}
+
+func (wildMonsterSystem *WildMonsterSystem) GetGroups() [][]*Entities.Monster {
+	groups := make([][]*Entities.Monster, 0, 256)
+	playerChunkX := math.Floor(float64(Player.Position.X()) / 16)
+	playerChunkZ := math.Floor(float64(Player.Position.Z()) / 16)
+
+	for _, group := range wildMonsterGroups {
+		for _, wildMonster := range group {
+			monsterChunkX := math.Floor(float64(wildMonster.Position.X()) / 16)
+			monsterChunkZ := math.Floor(float64(wildMonster.Position.Z()) / 16)
+
+			if monsterChunkX > playerChunkX-float64(DISPLAY_CHUNKS_SIZE/2) &&
+				monsterChunkX < playerChunkX+float64(DISPLAY_CHUNKS_SIZE/2) &&
+
+				monsterChunkZ > playerChunkZ-float64(DISPLAY_CHUNKS_SIZE/2) &&
+				monsterChunkZ < playerChunkZ+float64(DISPLAY_CHUNKS_SIZE/2) {
+
+				groups = append(groups, group)
+				break
+			}
+		}
+	}
+
+	return groups
 }

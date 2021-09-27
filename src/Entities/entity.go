@@ -11,6 +11,7 @@ type IEntity interface {
 	GetMeshes() []*Models.TexturedModel
 	GetTransformationMatrix() mgl32.Mat4
 	GetPosition() mgl32.Vec3
+	GetSignedDistance(position mgl32.Vec3) float32
 }
 
 type Entity struct {
@@ -50,7 +51,10 @@ func (entity *Entity) GetTransformationMatrix() mgl32.Mat4 {
 	)
 }
 
-
 func (entity *Entity) GetPosition() mgl32.Vec3 {
 	return entity.Position
+}
+
+func (entity *Entity) GetSignedDistance(position mgl32.Vec3) float32 {
+	return 0
 }

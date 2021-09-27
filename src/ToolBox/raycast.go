@@ -14,15 +14,15 @@ type ICamera interface {
 }
 
 type Raycast struct {
-	Ray mgl32.Vec3
-	RayOrigin mgl32.Vec3
+	Ray              mgl32.Vec3
+	RayOrigin        mgl32.Vec3
 	projectionMatrix mgl32.Mat4
-	viewMatrix mgl32.Mat4
-	camera ICamera
+	viewMatrix       mgl32.Mat4
+	camera           ICamera
 }
 
-func NewRaycast(camera ICamera, projectionMatrix mgl32.Mat4) *Raycast {
-	return &Raycast{
+func NewRaycast(camera ICamera, projectionMatrix mgl32.Mat4) Raycast {
+	return Raycast{
 		mgl32.Vec3{},
 		mgl32.Vec3{},
 		projectionMatrix,
@@ -32,7 +32,7 @@ func NewRaycast(camera ICamera, projectionMatrix mgl32.Mat4) *Raycast {
 }
 
 func (raycast *Raycast) Update() {
-	if (Constants.PROJECTION == "ORTHO") {
+	if Constants.PROJECTION == "ORTHO" {
 		// https://stackoverflow.com/a/66813405
 		worldUpDirection := mgl32.Vec3{0, 1, 0}
 		mouseX, mouseY := glfw.GetCurrentContext().GetCursorPos()
@@ -40,8 +40,8 @@ func (raycast *Raycast) Update() {
 
 		camDirection := raycast.camera.GetTargetPosition().Sub(raycast.camera.GetPosition()).Normalize()
 
-		x := +(2 * float32(mouseX) / float32(width) - 1) * 16 * float32(width) / float32(height)
-		y := -(2 * float32(mouseY) / float32(height) - 1) * 16
+		x := +(2*float32(mouseX)/float32(width) - 1) * 16 * float32(width) / float32(height)
+		y := -(2*float32(mouseY)/float32(height) - 1) * 16
 
 		cameraRight := camDirection.Cross(worldUpDirection).Normalize()
 		cameraUp := cameraRight.Cross(camDirection).Normalize()
@@ -66,12 +66,12 @@ func (raycast *Raycast) calculateMouseRay() mgl32.Vec3 {
 
 func (raycast *Raycast) getNormalizedDeviceCoords(mouseX, mouseY float32) mgl32.Vec2 {
 	width, height := glfw.GetCurrentContext().GetSize()
-	x := (2 * mouseX) / float32(width) - 1
-	y := (2 * mouseY) / float32(height) - 1
+	x := (2*mouseX)/float32(width) - 1
+	y := (2*mouseY)/float32(height) - 1
 	return mgl32.Vec2{x, -y}
 }
 
-func (raycast *Raycast) toEyeCoords(clipCoords mgl32.Vec4) mgl32.Vec4{
+func (raycast *Raycast) toEyeCoords(clipCoords mgl32.Vec4) mgl32.Vec4 {
 	invertedProjection := raycast.projectionMatrix.Inv()
 	eyeCoords := invertedProjection.Mul4x1(clipCoords)
 	return mgl32.Vec4{eyeCoords.X(), eyeCoords.Y(), -1, 0}
