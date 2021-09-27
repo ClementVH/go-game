@@ -10,6 +10,7 @@ import (
 type IEntity interface {
 	GetMeshes() []*Models.TexturedModel
 	GetTransformationMatrix() mgl32.Mat4
+	GetPosition() mgl32.Vec3
 }
 
 type Entity struct {
@@ -47,4 +48,9 @@ func (entity *Entity) GetTransformationMatrix() mgl32.Mat4 {
 		entity.RotX, entity.RotY, entity.RotZ,
 		entity.Scale,
 	)
+}
+
+
+func (entity *Entity) GetPosition() mgl32.Vec3 {
+	return entity.Position
 }

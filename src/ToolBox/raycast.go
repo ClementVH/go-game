@@ -1,8 +1,7 @@
-package Raycast
+package ToolBox
 
 import (
-	"go-game/src/RenderEngine"
-	"go-game/src/Systems"
+	"go-game/src/Constants"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/go-gl/mathgl/mgl32"
@@ -10,6 +9,8 @@ import (
 
 type ICamera interface {
 	GetViewMatrix() mgl32.Mat4
+	GetTargetPosition() mgl32.Vec3
+	GetPosition() mgl32.Vec3
 }
 
 type Raycast struct {
@@ -31,13 +32,13 @@ func NewRaycast(camera ICamera, projectionMatrix mgl32.Mat4) *Raycast {
 }
 
 func (raycast *Raycast) Update() {
-	if (RenderEngine.PROJECTION == "ORTHO") {
+	if (Constants.PROJECTION == "ORTHO") {
 		// https://stackoverflow.com/a/66813405
 		worldUpDirection := mgl32.Vec3{0, 1, 0}
 		mouseX, mouseY := glfw.GetCurrentContext().GetCursorPos()
 		width, height := glfw.GetCurrentContext().GetSize()
 
-		camDirection := Systems.Player.Position.Sub(Systems.Player.Camera.Position).Normalize()
+		camDirection := raycast.camera.GetTargetPosition().Sub(raycast.camera.GetPosition()).Normalize()
 
 		x := +(2 * float32(mouseX) / float32(width) - 1) * 16 * float32(width) / float32(height)
 		y := -(2 * float32(mouseY) / float32(height) - 1) * 16
@@ -45,12 +46,12 @@ func (raycast *Raycast) Update() {
 		cameraRight := camDirection.Cross(worldUpDirection).Normalize()
 		cameraUp := cameraRight.Cross(camDirection).Normalize()
 
-		raycast.RayOrigin = Systems.Player.Camera.Position.Add(cameraRight.Mul(x)).Add(cameraUp.Mul(y))
+		raycast.RayOrigin = raycast.camera.GetPosition().Add(cameraRight.Mul(x)).Add(cameraUp.Mul(y))
 		raycast.Ray = camDirection.Normalize()
 	} else {
 		raycast.viewMatrix = raycast.camera.GetViewMatrix()
 		raycast.Ray = raycast.calculateMouseRay()
-		raycast.RayOrigin = Systems.Player.Camera.Position
+		raycast.RayOrigin = raycast.camera.GetPosition()
 	}
 }
 

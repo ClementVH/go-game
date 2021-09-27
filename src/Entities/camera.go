@@ -14,12 +14,14 @@ type ICamera interface {
 
 type Camera struct {
 	Entity
+	target IEntity
 	Pitch, Yaw, Roll float32
 }
 
-func NewCamera(position mgl32.Vec3) *Camera {
+func NewCamera(position mgl32.Vec3, target IEntity) *Camera {
 	camera := Camera{
 		*NewEntity(nil, position, 0, 0, 0, 0),
+		target,
 		35.264, 45, 0,
 	}
 	return &camera
@@ -45,4 +47,8 @@ func (camera *Camera) GetViewMatrix() mgl32.Mat4 {
 	cameraPos := info.Position
 	matrix = matrix.Mul4(mgl32.Translate3D(-cameraPos.X(), -cameraPos.Y(), -cameraPos.Z()))
 	return matrix
+}
+
+func (camera *Camera) GetTargetPosition() mgl32.Vec3 {
+	return camera.target.GetPosition()
 }

@@ -1,6 +1,7 @@
 package RenderEngine
 
 import (
+	"go-game/src/Constants"
 	"go-game/src/Entities"
 	"go-game/src/Shaders"
 	"go-game/src/Systems"
@@ -13,8 +14,6 @@ import (
 const FOV = 70
 const NEAR_PLANE = 0.1
 const FAR_PLANE = 1000
-
-const PROJECTION = "ORTHO"
 
 type MasterRenderer struct {
 	StaticShader   *Shaders.StaticShader
@@ -60,7 +59,7 @@ func (renderer *MasterRenderer) CleanUp() {
 }
 
 func createProjectionMatrix() mgl32.Mat4 {
-	if PROJECTION == "ORTHO" {
+	if Constants.PROJECTION == "ORTHO" {
 		width, height := Window.Window.GetSize()
 		var top float32 = 16;
 		var bottom = -top

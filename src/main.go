@@ -6,7 +6,6 @@ import (
 	"runtime"
 
 	"go-game/src/Entities"
-	"go-game/src/Raycast"
 	"go-game/src/RenderEngine"
 	"go-game/src/Systems"
 	"go-game/src/ToolBox"
@@ -42,7 +41,7 @@ func main() {
 		mgl32.Vec3{1, 1, 1},
 	)
 
-	raycast := Raycast.NewRaycast(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
+	raycast := ToolBox.NewRaycast(playerSystem.GetPlayer().Camera, renderer.ProjectionMatrix)
 
 	for !Window.Window.ShouldClose() {
 		ToolBox.FpsCount()
