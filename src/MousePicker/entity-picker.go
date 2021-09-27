@@ -6,13 +6,13 @@ import (
 	"go-game/src/State"
 )
 
-func (picker *MousePicker) GetEntity() (Entities.IEntity, error) {
+func (picker *MousePicker) GetEntity() (*Entities.Entity, error) {
 	wildMonsterSystem := State.Systems.WildMonsterSystem
 
 	var startPos = picker.RayOrigin
 	var currPos = startPos
 	var distance float32 = 10000
-	var m Entities.IEntity
+	var m *Entities.Entity
 	var currIt = 50
 
 	entities := wildMonsterSystem.GetEntities()

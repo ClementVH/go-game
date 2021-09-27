@@ -36,8 +36,8 @@ func (wildMonsterSystem *WildMonsterSystem) Tick() {
 	}
 }
 
-func (wildMonsterSystem *WildMonsterSystem) GetEntities() []Entities.IEntity {
-	entities := make([]Entities.IEntity, 0, 256)
+func (wildMonsterSystem *WildMonsterSystem) GetEntities() []*Entities.Entity {
+	entities := make([]*Entities.Entity, 0, 256)
 	playerChunkX := math.Floor(float64(Player.Position.X()) / 16)
 	playerChunkZ := math.Floor(float64(Player.Position.Z()) / 16)
 
@@ -52,7 +52,7 @@ func (wildMonsterSystem *WildMonsterSystem) GetEntities() []Entities.IEntity {
 				monsterChunkZ > playerChunkZ-float64(DISPLAY_CHUNKS_SIZE/2) &&
 				monsterChunkZ < playerChunkZ+float64(DISPLAY_CHUNKS_SIZE/2) {
 
-				entities = append(entities, wildMonster)
+				entities = append(entities, &wildMonster.Entity)
 			}
 		}
 	}

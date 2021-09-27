@@ -57,15 +57,15 @@ func (chunkSystem *ChunkSystem) Tick() {
 	}
 }
 
-func (chunkSystem *ChunkSystem) GetEntities() []Entities.IEntity {
-	entities := make([]Entities.IEntity, 0, DISPLAY_CHUNKS_SIZE*DISPLAY_CHUNKS_SIZE)
+func (chunkSystem *ChunkSystem) GetEntities() []*Entities.Entity {
+	entities := make([]*Entities.Entity, 0, DISPLAY_CHUNKS_SIZE*DISPLAY_CHUNKS_SIZE)
 
 	for _, chunks := range currentChunks {
 		for _, chunk := range chunks {
 			if chunk.X >= 0 && chunk.Z >= 0 {
 				entity := chunkEntities[chunk.X][chunk.Z]
 				if entity != nil {
-					entities = append(entities, entity)
+					entities = append(entities, &entity.Entity)
 				}
 			}
 		}

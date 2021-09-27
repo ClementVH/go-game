@@ -6,11 +6,11 @@ import (
 
 type Camera struct {
 	Entity
-	target           IEntity
+	target           *Entity
 	Pitch, Yaw, Roll float32
 }
 
-func NewCamera(position mgl32.Vec3, target IEntity) *Camera {
+func NewCamera(position mgl32.Vec3, target *Entity) *Camera {
 	camera := Camera{
 		*NewEntity(nil, position, 0, 0, 0, 0),
 		target,
