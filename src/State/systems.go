@@ -14,9 +14,14 @@ type IWildMonsterSystem interface {
 	GetGroups() [][]*Entities.Monster
 }
 
+type IChunkSystem interface {
+	ISystem
+	GetChunk(x, y int) *Entities.Chunk
+}
+
 type SystemsState struct {
 	PlayerSystem      ISystem
-	ChunkSystem       ISystem
+	ChunkSystem       IChunkSystem
 	WildMonsterSystem IWildMonsterSystem
 }
 
@@ -24,7 +29,7 @@ func (state *SystemsState) SetPlayerSystem(playerSystem ISystem) {
 	state.PlayerSystem = playerSystem
 }
 
-func (state *SystemsState) SetChunkSystem(chunksSystem ISystem) {
+func (state *SystemsState) SetChunkSystem(chunksSystem IChunkSystem) {
 	state.ChunkSystem = chunksSystem
 }
 

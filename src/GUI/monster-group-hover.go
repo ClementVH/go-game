@@ -1,7 +1,7 @@
 package GUI
 
 import (
-	"fmt"
+	"go-game/src/Combat"
 	"go-game/src/State"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
@@ -18,7 +18,9 @@ func newMonsterGroupHover() MonsterGroupHover {
 			var group, _ = State.GUI.MousePicker.GetMonsterGroup()
 
 			if group != nil {
-				fmt.Println(group[0].Position)
+				x, y := group[0].GetChunkCoords()
+				chunk := State.Systems.ChunkSystem.GetChunk(x, y)
+				State.Combat.SetCombat(Combat.NewCombat(group, chunk))
 			}
 		}
 	})

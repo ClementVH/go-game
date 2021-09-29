@@ -51,3 +51,8 @@ func (entity *Entity) GetPosition() mgl32.Vec3 {
 func (entity *Entity) GetSignedDistance(position mgl32.Vec3) float32 {
 	return 0
 }
+
+func (entity *Entity) GetChunkCoords() (int, int) {
+	position := entity.GetPosition()
+	return int(position.X() / 16), int(position.Z() / 16)
+}

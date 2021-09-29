@@ -108,3 +108,7 @@ func getZoneIndex() int {
 
 	return zoneIndex
 }
+
+func (chunkSystem *ChunkSystem) GetChunk(x, y int) *Entities.Chunk {
+	return chunkEntities[x][y]
+}
