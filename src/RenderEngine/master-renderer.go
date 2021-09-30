@@ -17,7 +17,9 @@ const FAR_PLANE = 1000
 
 type MasterRenderer struct {
 	StaticShader     *Shaders.StaticShader
+	ChunkShader      *Shaders.ChunkShader
 	entityRenderer   *EntityRenderer
+	chunkRenderer    *ChunkRenderer
 	ProjectionMatrix mgl32.Mat4
 }
 
@@ -26,10 +28,13 @@ func NewMasterRenderer() *MasterRenderer {
 	gl.CullFace(gl.BACK)
 
 	shader := Shaders.NewStaticShader()
+	chunkShader := Shaders.NewChunkShader()
 	projectionMatrix := createProjectionMatrix()
 	return &MasterRenderer{
 		shader,
+		chunkShader,
 		NewEntityRenderer(shader, projectionMatrix),
+		NewChunkRenderer(chunkShader, projectionMatrix),
 		projectionMatrix,
 	}
 }
@@ -37,12 +42,17 @@ func NewMasterRenderer() *MasterRenderer {
 func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.Camera) {
 	renderer.prepare()
 
+	renderer.ChunkShader.Start()
+	renderer.ChunkShader.LoadLight(light)
+	renderer.ChunkShader.LoadViewMatrix(camera)
+	renderer.chunkRenderer.Render(State.Systems.ChunkSystem.GetEntities())
+	renderer.ChunkShader.Stop()
+
 	renderer.StaticShader.Start()
 	renderer.StaticShader.LoadLight(light)
 	renderer.StaticShader.LoadViewMatrix(camera)
-	for _, system := range State.Systems.GetAll() {
-		renderer.entityRenderer.Render(system.GetEntities())
-	}
+	renderer.entityRenderer.Render(State.Systems.PlayerSystem.GetEntities())
+	renderer.entityRenderer.Render(State.Systems.WildMonsterSystem.GetEntities())
 	renderer.StaticShader.Stop()
 }
 
@@ -50,6 +60,8 @@ func (renderer *MasterRenderer) prepare() {
 	gl.Enable(gl.DEPTH_TEST)
 	gl.ClearColor(0, 0, 0, 1)
 	gl.Clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+	// gl.PolygonMode(gl.FRONT_AND_BACK, gl.LINE)
 }
 
 func (renderer *MasterRenderer) CleanUp() {
