@@ -45,6 +45,7 @@ func (renderer *MasterRenderer) Render(light *Entities.Light, camera *Entities.C
 	renderer.ChunkShader.Start()
 	renderer.ChunkShader.LoadLight(light)
 	renderer.ChunkShader.LoadViewMatrix(camera)
+	renderer.ChunkShader.LoadCombatChunk()
 	renderer.chunkRenderer.Render(State.Systems.ChunkSystem.GetEntities())
 	renderer.ChunkShader.Stop()
 

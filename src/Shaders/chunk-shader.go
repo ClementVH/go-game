@@ -2,6 +2,7 @@ package Shaders
 
 import (
 	"go-game/src/Entities"
+	"go-game/src/State"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -12,12 +13,14 @@ type ChunkShader struct {
 	viewMatrix           int32
 	lightPosition        int32
 	lightColor           int32
+	combatChunk          int32
 	ShaderProgram
 }
 
 func NewChunkShader() *ChunkShader {
 	shaderProgram := NewShaderProgram(ChunkVertexShader, ChunkFragmentShader)
-	shader := ChunkShader{0, 0, 0, 0, 0, shaderProgram}
+	var shader ChunkShader
+	shader.ShaderProgram = shaderProgram
 	shader.bindAttributes()
 	shader.setup()
 	shader.getAllUniformLocations()
@@ -35,6 +38,7 @@ func (shader *ChunkShader) getAllUniformLocations() {
 	shader.viewMatrix = shader.getUniformLocation("viewMatrix")
 	shader.lightPosition = shader.getUniformLocation("lightPosition")
 	shader.lightColor = shader.getUniformLocation("lightColor")
+	shader.combatChunk = shader.getUniformLocation("combatChunk")
 }
 
 func (shader *ChunkShader) LoadTransformationMatrix(transformation mgl32.Mat4) {
@@ -53,6 +57,14 @@ func (shader *ChunkShader) LoadViewMatrix(camera *Entities.Camera) {
 func (shader *ChunkShader) LoadLight(light *Entities.Light) {
 	loadVector(shader.lightPosition, light.Position)
 	loadVector(shader.lightColor, light.Color)
+}
+
+func (shader *ChunkShader) LoadCombatChunk() {
+	if State.Combat.Combat != nil && State.Combat.Combat.GetChunk() != nil {
+		loadVector(shader.combatChunk, State.Combat.Combat.GetChunk().Position)
+	} else {
+		loadVector(shader.combatChunk, mgl32.Vec3{-1, 0, 1})
+	}
 }
 
 var ChunkVertexShader = `
@@ -94,6 +106,7 @@ out vec4 out_Color;
 
 uniform sampler2D textureSampler;
 uniform vec3 lightColor;
+uniform vec3 combatChunk;
 
 void main(void) {
 	vec3 unitNormal = normalize(surfaceNormal);
@@ -103,7 +116,8 @@ void main(void) {
 	float brightness = max(nDot1, 0.4);
 	vec3 diffuse = brightness * lightColor;
 
-	if (worldPosition.x >= 0 && worldPosition.x < 16) {
+	if (worldPosition.x >= combatChunk.x && worldPosition.x <= combatChunk.x + 16 &&
+		worldPosition.z >= combatChunk.z && worldPosition.z <= combatChunk.z + 16) {
 		out_Color = vec4(1.0, 0.0, 0.0, 1.0);
 	} else {
 		out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords);

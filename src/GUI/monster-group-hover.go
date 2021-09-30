@@ -1,6 +1,7 @@
 package GUI
 
 import (
+	"fmt"
 	"go-game/src/Combat"
 	"go-game/src/State"
 
@@ -21,6 +22,8 @@ func newMonsterGroupHover() MonsterGroupHover {
 				x, y := group[0].GetChunkCoords()
 				chunk := State.Systems.ChunkSystem.GetChunk(x, y)
 				State.Combat.SetCombat(Combat.NewCombat(group, chunk))
+
+				fmt.Println(chunk.Position)
 			}
 		}
 	})

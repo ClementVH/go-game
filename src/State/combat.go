@@ -6,6 +6,7 @@ var Combat CombatState = CombatState{}
 
 type ICombat interface {
 	GetMonsters() []*Entities.Monster
+	GetChunk() *Entities.Chunk
 }
 
 type CombatState struct {

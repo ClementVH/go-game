@@ -55,7 +55,5 @@ func (renderer *ChunkRenderer) unbindTexturedModel(model *Models.TexturedModel) 
 
 func (renderer *ChunkRenderer) prepareInstance(entity *Entities.Entity) {
 	transformationMatrix := entity.GetTransformationMatrix()
-
 	renderer.shader.LoadTransformationMatrix(transformationMatrix)
-
 }

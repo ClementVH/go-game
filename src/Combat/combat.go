@@ -23,3 +23,7 @@ func NewCombat(group []*Entities.Monster, chunk *Entities.Chunk) *Combat {
 func (combat *Combat) GetMonsters() []*Entities.Monster {
 	return combat.Monsters
 }
+
+func (combat *Combat) GetChunk() *Entities.Chunk {
+	return combat.Chunk
+}
