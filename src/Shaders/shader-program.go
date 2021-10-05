@@ -61,21 +61,21 @@ func (shader *ShaderProgram) bindAttribute(attribute uint32, name string) {
 	gl.BindAttribLocation(shader.programID, attribute, &nameArray[0])
 }
 
-func loadFloat(location int32, value float32) {
-	gl.Uniform1f(location, value)
-}
+// func loadFloat(location int32, value float32) {
+// 	gl.Uniform1f(location, value)
+// }
 
 func loadVector(location int32, vector mgl32.Vec3) {
 	gl.Uniform3f(location, vector.X(), vector.Y(), vector.Z())
 }
 
-func loadBoolean(location int32, value bool) {
-	toLoad := float32(0)
-	if value {
-		toLoad = 1
-	}
-	gl.Uniform1f(location, toLoad)
-}
+// func loadBoolean(location int32, value bool) {
+// 	toLoad := float32(0)
+// 	if value {
+// 		toLoad = 1
+// 	}
+// 	gl.Uniform1f(location, toLoad)
+// }
 
 func loadMatrix(location int32, matrix mgl32.Mat4) {
 	gl.UniformMatrix4fv(location, 1, false, &matrix[0])
