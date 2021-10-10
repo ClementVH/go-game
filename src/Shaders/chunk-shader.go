@@ -116,9 +116,29 @@ void main(void) {
 	float brightness = max(nDot1, 0.4);
 	vec3 diffuse = brightness * lightColor;
 
-	if (worldPosition.x >= combatChunk.x && worldPosition.x <= combatChunk.x + 16 &&
-		worldPosition.z >= combatChunk.z && worldPosition.z <= combatChunk.z + 16) {
-		out_Color = vec4(1.0, 0.0, 0.0, 1.0);
+	bool inCombatChunkX = worldPosition.x >= combatChunk.x && worldPosition.x <= combatChunk.x + 16;
+	bool inCombatChunkZ = worldPosition.z >= combatChunk.z && worldPosition.z <= combatChunk.z + 16;
+	bool inCombatChunk = inCombatChunkX && inCombatChunkZ;
+
+	if (inCombatChunk) {
+		float localCombatChunkX = worldPosition.x - combatChunk.x;
+		float localCombatChunkZ = worldPosition.z - combatChunk.z;
+
+		vec4 gridColor = vec4(0.7, 0.7, 0.7, 1.0);
+		vec4 redColor = vec4(1.0, 0.0, 0.0, 1.0);
+
+		float i = 0;
+		float currX = localCombatChunkX;
+		while (i <= 8.0) {
+			currX = abs(localCombatChunkX - i);
+			i++;
+
+			if (currX < 0.1) {
+				out_Color = gridColor;
+				break;
+			}
+		}
+		out_Color = redColor;
 	} else {
 		out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords);
 	}
