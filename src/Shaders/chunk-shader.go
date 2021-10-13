@@ -14,6 +14,8 @@ type ChunkShader struct {
 	lightPosition        int32
 	lightColor           int32
 	combatChunk          int32
+	chunkTexture         int32
+	blendMapTexture      int32
 	ShaderProgram
 }
 
@@ -39,6 +41,8 @@ func (shader *ChunkShader) getAllUniformLocations() {
 	shader.lightPosition = shader.getUniformLocation("lightPosition")
 	shader.lightColor = shader.getUniformLocation("lightColor")
 	shader.combatChunk = shader.getUniformLocation("combatChunk")
+	shader.chunkTexture = shader.getUniformLocation("chunkTexture")
+	shader.blendMapTexture = shader.getUniformLocation("blendMapTexture")
 }
 
 func (shader *ChunkShader) LoadTransformationMatrix(transformation mgl32.Mat4) {
@@ -57,6 +61,11 @@ func (shader *ChunkShader) LoadViewMatrix(camera *Entities.Camera) {
 func (shader *ChunkShader) LoadLight(light *Entities.Light) {
 	loadVector(shader.lightPosition, light.Position)
 	loadVector(shader.lightColor, light.Color)
+}
+
+func (shader *ChunkShader) LoadTextures() {
+	loadInt(shader.chunkTexture, 0)
+	loadInt(shader.blendMapTexture, 1)
 }
 
 func (shader *ChunkShader) LoadCombatChunk() {
@@ -104,7 +113,8 @@ in vec4 worldPosition;
 
 out vec4 out_Color;
 
-uniform sampler2D textureSampler;
+uniform sampler2D chunkTexture;
+uniform sampler2D blendMapTexture;
 uniform vec3 lightColor;
 uniform vec3 combatChunk;
 
@@ -120,27 +130,18 @@ void main(void) {
 	bool inCombatChunkZ = worldPosition.z >= combatChunk.z && worldPosition.z <= combatChunk.z + 16;
 	bool inCombatChunk = inCombatChunkX && inCombatChunkZ;
 
+	vec4 textureColor = texture(chunkTexture, pass_textureCoords);
+
 	if (inCombatChunk) {
-		float localCombatChunkX = worldPosition.x - combatChunk.x;
-		float localCombatChunkZ = worldPosition.z - combatChunk.z;
-
 		vec4 gridColor = vec4(0.7, 0.7, 0.7, 1.0);
-		vec4 redColor = vec4(1.0, 0.0, 0.0, 1.0);
 
-		float i = 0;
-		float currX = localCombatChunkX;
-		while (i <= 8.0) {
-			currX = abs(localCombatChunkX - i);
-			i++;
+		vec4 blendMapColor = texture(blendMapTexture, pass_textureCoords);
 
-			if (currX < 0.1) {
-				out_Color = gridColor;
-				break;
-			}
+		if (blendMapColor.r > 0.5) {
+			textureColor = gridColor;
 		}
-		out_Color = redColor;
-	} else {
-		out_Color = vec4(diffuse, 1.0) * texture(textureSampler, pass_textureCoords);
 	}
+
+	out_Color = vec4(diffuse, 1.0) * textureColor;
 }
 ` + "\x00"

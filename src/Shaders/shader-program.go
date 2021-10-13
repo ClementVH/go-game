@@ -69,6 +69,10 @@ func loadVector(location int32, vector mgl32.Vec3) {
 	gl.Uniform3f(location, vector.X(), vector.Y(), vector.Z())
 }
 
+func loadInt(location int32, number int32) {
+	gl.Uniform1i(location, number)
+}
+
 // func loadBoolean(location int32, value bool) {
 // 	toLoad := float32(0)
 // 	if value {

@@ -2,6 +2,7 @@ package RenderEngine
 
 import (
 	"go-game/src/Entities"
+	"go-game/src/Loaders"
 	"go-game/src/Models"
 	"go-game/src/Shaders"
 
@@ -10,15 +11,18 @@ import (
 )
 
 type ChunkRenderer struct {
-	shader *Shaders.ChunkShader
+	shader      *Shaders.ChunkShader
+	gridBlendId uint32
 }
 
 func NewChunkRenderer(shader *Shaders.ChunkShader, matrix mgl32.Mat4) *ChunkRenderer {
 	renderer := &ChunkRenderer{
 		shader,
+		Loaders.LoadTexture("../res/textures", "grid-blend.png"),
 	}
 	shader.Start()
 	shader.LoadProjectionMatrix(matrix)
+	shader.LoadTextures()
 	shader.Stop()
 
 	return renderer
@@ -43,6 +47,8 @@ func (renderer *ChunkRenderer) prepareTexturedModel(model *Models.TexturedModel)
 	gl.EnableVertexArrayAttrib(rawModel.VaoID, 2)
 	gl.ActiveTexture(gl.TEXTURE0)
 	gl.BindTexture(gl.TEXTURE_2D, model.Texture.TextureID)
+	gl.ActiveTexture(gl.TEXTURE1)
+	gl.BindTexture(gl.TEXTURE_2D, renderer.gridBlendId)
 }
 
 func (renderer *ChunkRenderer) unbindTexturedModel(model *Models.TexturedModel) {
