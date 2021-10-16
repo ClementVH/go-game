@@ -35,8 +35,8 @@ func (raycast *Raycast) Update() {
 
 		camDirection := raycast.camera.GetTargetPosition().Sub(raycast.camera.GetPosition()).Normalize()
 
-		x := +(2*float32(mouseX)/float32(width) - 1) * 16 * float32(width) / float32(height)
-		y := -(2*float32(mouseY)/float32(height) - 1) * 16
+		x := +(2*float32(mouseX)/float32(width) - 1) * 12 * float32(width) / float32(height)
+		y := -(2*float32(mouseY)/float32(height) - 1) * 12
 
 		cameraRight := camDirection.Cross(worldUpDirection).Normalize()
 		cameraUp := cameraRight.Cross(camDirection).Normalize()

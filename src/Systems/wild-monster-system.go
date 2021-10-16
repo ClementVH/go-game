@@ -78,7 +78,7 @@ func loadSpawnZone(zoneIndex int) {
 				monsterModel,
 				mgl32.Vec3{
 					float32(position.X*16 + 8),
-					2,
+					0,
 					float32(position.Z*16 + 8),
 				},
 			)

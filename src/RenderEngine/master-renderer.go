@@ -72,7 +72,7 @@ func (renderer *MasterRenderer) CleanUp() {
 func createProjectionMatrix() mgl32.Mat4 {
 	if Constants.PROJECTION == "ORTHO" {
 		width, height := Window.Window.GetSize()
-		var top float32 = 16
+		var top float32 = 12
 		var bottom = -top
 		var right = top * float32(width) / float32(height)
 		var left = -right
