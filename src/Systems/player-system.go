@@ -33,6 +33,6 @@ func (playerSystem *PlayerSystem) Tick() {
 	Player.Move()
 }
 
-func (playerSystem *PlayerSystem) GetEntities() []*Entities.Entity {
-	return []*Entities.Entity{&Player.Entity}
+func (playerSystem *PlayerSystem) GetEntities() []Entities.IEntity {
+	return []Entities.IEntity{Player}
 }

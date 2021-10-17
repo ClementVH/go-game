@@ -28,10 +28,10 @@ func NewChunkRenderer(shader *Shaders.ChunkShader, matrix mgl32.Mat4) *ChunkRend
 	return renderer
 }
 
-func (renderer *ChunkRenderer) Render(entities []*Entities.Entity) {
+func (renderer *ChunkRenderer) Render(entities []Entities.IEntity) {
 	for _, entity := range entities {
 		for _, mesh := range entity.GetMeshes() {
-			renderer.prepareTexturedModel(mesh)
+			renderer.prepareTexturedModel(mesh, entity)
 			renderer.prepareInstance(entity)
 			gl.DrawElements(gl.TRIANGLES, int32(mesh.RawModel.VertexCount), gl.UNSIGNED_INT, nil)
 			renderer.unbindTexturedModel(mesh)
@@ -39,7 +39,8 @@ func (renderer *ChunkRenderer) Render(entities []*Entities.Entity) {
 	}
 }
 
-func (renderer *ChunkRenderer) prepareTexturedModel(model *Models.TexturedModel) {
+func (renderer *ChunkRenderer) prepareTexturedModel(model *Models.TexturedModel, entity interface{}) {
+	var chunk = entity.(*Entities.Chunk)
 	rawModel := model.RawModel
 	gl.BindVertexArray(rawModel.VaoID)
 	gl.EnableVertexArrayAttrib(rawModel.VaoID, 0)
@@ -49,6 +50,8 @@ func (renderer *ChunkRenderer) prepareTexturedModel(model *Models.TexturedModel)
 	gl.BindTexture(gl.TEXTURE_2D, model.Texture.TextureID)
 	gl.ActiveTexture(gl.TEXTURE1)
 	gl.BindTexture(gl.TEXTURE_2D, renderer.gridBlendId)
+	gl.ActiveTexture(gl.TEXTURE2)
+	gl.BindTexture(gl.TEXTURE_2D, chunk.StartPositionsId)
 }
 
 func (renderer *ChunkRenderer) unbindTexturedModel(model *Models.TexturedModel) {
@@ -59,7 +62,7 @@ func (renderer *ChunkRenderer) unbindTexturedModel(model *Models.TexturedModel) 
 	gl.BindVertexArray(0)
 }
 
-func (renderer *ChunkRenderer) prepareInstance(entity *Entities.Entity) {
+func (renderer *ChunkRenderer) prepareInstance(entity Entities.IEntity) {
 	transformationMatrix := entity.GetTransformationMatrix()
 	renderer.shader.LoadTransformationMatrix(transformationMatrix)
 }

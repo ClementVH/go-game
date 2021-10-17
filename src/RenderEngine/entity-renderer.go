@@ -24,7 +24,7 @@ func NewEntityRenderer(shader *Shaders.StaticShader, matrix mgl32.Mat4) *EntityR
 	return renderer
 }
 
-func (renderer *EntityRenderer) Render(entities []*Entities.Entity) {
+func (renderer *EntityRenderer) Render(entities []Entities.IEntity) {
 	for _, entity := range entities {
 		for _, mesh := range entity.GetMeshes() {
 			renderer.prepareTexturedModel(mesh)
@@ -53,7 +53,7 @@ func (renderer *EntityRenderer) unbindTexturedModel(model *Models.TexturedModel)
 	gl.BindVertexArray(0)
 }
 
-func (renderer *EntityRenderer) prepareInstance(entity *Entities.Entity) {
+func (renderer *EntityRenderer) prepareInstance(entity Entities.IEntity) {
 	transformationMatrix := entity.GetTransformationMatrix()
 
 	renderer.shader.LoadTransformationMatrix(transformationMatrix)

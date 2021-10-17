@@ -7,6 +7,16 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
+type IEntity interface {
+	IncreasePostion(dx, dy, dz float32)
+	IncreaseRotation(dx, dy, dz float32)
+	GetMeshes() []*Models.TexturedModel
+	GetTransformationMatrix() mgl32.Mat4
+	GetPosition() mgl32.Vec3
+	GetSignedDistance(position mgl32.Vec3) float32
+	GetChunkCoords() (int, int)
+}
+
 type Entity struct {
 	Meshes                  []*Models.TexturedModel
 	Position                mgl32.Vec3

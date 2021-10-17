@@ -5,7 +5,7 @@ import "go-game/src/Entities"
 var Systems SystemsState = SystemsState{}
 
 type ISystem interface {
-	GetEntities() []*Entities.Entity
+	GetEntities() []Entities.IEntity
 	Tick()
 }
 

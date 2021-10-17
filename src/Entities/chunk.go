@@ -13,17 +13,19 @@ type ChunkPosition struct {
 
 type Chunk struct {
 	Entity
+	StartPositionsId uint32
 }
 
-func NewChunk(model []*Models.TexturedModel, X, Z int) *Chunk {
+func NewChunk(model []*Models.TexturedModel, X, Z int, startPositionId uint32) *Chunk {
 	entity := Entity{
 		model,
-		mgl32.Vec3{float32(X) * 16, 0, float32(Z) * 16 },
+		mgl32.Vec3{float32(X) * 16, 0, float32(Z) * 16},
 		0, 0, 0, 1,
 	}
 
 	chunk := &Chunk{
 		entity,
+		startPositionId,
 	}
 
 	return chunk

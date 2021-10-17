@@ -8,14 +8,15 @@ import (
 )
 
 type ChunkShader struct {
-	transformationMatrix int32
-	projectionMatrix     int32
-	viewMatrix           int32
-	lightPosition        int32
-	lightColor           int32
-	combatChunk          int32
-	chunkTexture         int32
-	blendMapTexture      int32
+	transformationMatrix  int32
+	projectionMatrix      int32
+	viewMatrix            int32
+	lightPosition         int32
+	lightColor            int32
+	combatChunk           int32
+	chunkTexture          int32
+	blendMapTexture       int32
+	startPositionsTexture int32
 	ShaderProgram
 }
 
@@ -43,6 +44,7 @@ func (shader *ChunkShader) getAllUniformLocations() {
 	shader.combatChunk = shader.getUniformLocation("combatChunk")
 	shader.chunkTexture = shader.getUniformLocation("chunkTexture")
 	shader.blendMapTexture = shader.getUniformLocation("blendMapTexture")
+	shader.startPositionsTexture = shader.getUniformLocation("startPositionsTexture")
 }
 
 func (shader *ChunkShader) LoadTransformationMatrix(transformation mgl32.Mat4) {
@@ -66,6 +68,7 @@ func (shader *ChunkShader) LoadLight(light *Entities.Light) {
 func (shader *ChunkShader) LoadTextures() {
 	loadInt(shader.chunkTexture, 0)
 	loadInt(shader.blendMapTexture, 1)
+	loadInt(shader.startPositionsTexture, 2)
 }
 
 func (shader *ChunkShader) LoadCombatChunk() {
@@ -115,6 +118,7 @@ out vec4 out_Color;
 
 uniform sampler2D chunkTexture;
 uniform sampler2D blendMapTexture;
+uniform sampler2D startPositionsTexture;
 uniform vec3 lightColor;
 uniform vec3 combatChunk;
 
@@ -134,11 +138,20 @@ void main(void) {
 
 	if (inCombatChunk) {
 		vec4 gridColor = vec4(0.7, 0.7, 0.7, 1.0);
+		vec4 blueColor = vec4(0.0, 0.0, 1.0, 1.0);
+		vec4 redColor = vec4(1.0, 0.0, 0.0, 1.0);
 
 		vec4 blendMapColor = texture(blendMapTexture, pass_textureCoords);
+		vec4 startPositionColor = texture(startPositionsTexture, pass_textureCoords);
 
 		if (blendMapColor.r > 0.5) {
 			textureColor = gridColor;
+		}
+
+		if (startPositionColor.r > 0.5) {
+			textureColor = blueColor;
+		} else if (startPositionColor.g > 0.5) {
+			textureColor = redColor;
 		}
 	}
 

@@ -23,7 +23,7 @@ func (picker *MousePicker) GetEntity() (*Entities.Entity, error) {
 			newDistance := monster.GetSignedDistance(currPos)
 			if newDistance < distance {
 				distance = newDistance
-				m = monster
+				m = monster.(*Entities.Entity)
 			}
 		}
 
