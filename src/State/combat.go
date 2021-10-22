@@ -2,7 +2,9 @@ package State
 
 import "go-game/src/Entities"
 
-var Combat CombatState = CombatState{}
+var Combat CombatState = CombatState{
+	nil,
+}
 
 type ICombat interface {
 	GetMonsters() []*Entities.Monster

@@ -11,22 +11,17 @@ import (
 type MonsterGroupHover struct {
 }
 
-func newMonsterGroupHover() MonsterGroupHover {
+func (gui *GUI) runMonsterGroupHover(button glfw.MouseButton, action glfw.Action) {
 
-	glfw.GetCurrentContext().SetMouseButtonCallback(func(w *glfw.Window, button glfw.MouseButton, action glfw.Action, mod glfw.ModifierKey) {
+	if button == glfw.MouseButton1 && action == glfw.Release {
+		var group, _ = State.GUI.MousePicker.GetMonsterGroup()
 
-		if button == glfw.MouseButton1 && action == glfw.Release {
-			var group, _ = State.GUI.MousePicker.GetMonsterGroup()
+		if group != nil {
+			x, y := group[0].GetChunkCoords()
+			chunk := State.Systems.ChunkSystem.GetChunk(x, y)
+			State.Combat.SetCombat(Combat.NewCombat(group, chunk))
 
-			if group != nil {
-				x, y := group[0].GetChunkCoords()
-				chunk := State.Systems.ChunkSystem.GetChunk(x, y)
-				State.Combat.SetCombat(Combat.NewCombat(group, chunk))
-
-				fmt.Println(chunk.Position)
-			}
+			fmt.Println(chunk.Position)
 		}
-	})
-
-	return MonsterGroupHover{}
+	}
 }
