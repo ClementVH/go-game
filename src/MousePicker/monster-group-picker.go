@@ -6,8 +6,6 @@ import (
 	"go-game/src/State"
 )
 
-var MonsterGroupPicker MousePicker
-
 func (picker *MousePicker) GetMonsterGroup() ([]*Entities.Monster, error) {
 	wildMonsterSystem := State.Systems.WildMonsterSystem
 

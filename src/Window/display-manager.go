@@ -19,7 +19,7 @@ func CreateDisplay() {
 	glfw.WindowHint(glfw.Resizable, glfw.False)
 	glfw.WindowHint(glfw.Samples, 4)
 
-	Window, err = glfw.CreateWindow(1920, 1080, "Go-Game", nil, nil)
+	Window, err = glfw.CreateWindow(800, 600, "Go-Game", nil, nil)
 	if err != nil {
 		panic(err)
 	}

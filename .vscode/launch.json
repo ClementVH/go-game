@@ -9,7 +9,11 @@
             "type": "go",
             "request": "launch",
             "mode": "debug",
-            "program": "src/main.go"
+            "program": "src/main.go",
+            "env": {
+                "MESA_GL_VERSION_OVERRIDE": "3.3",
+                "MESA_GLSL_VERSION_OVERRIDE": "330"
+            }
         }
     ]
 }
