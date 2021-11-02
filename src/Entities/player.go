@@ -45,6 +45,13 @@ func NewPlayer(model []*Models.TexturedModel, position mgl32.Vec3, RotX, RotY, R
 	return player
 }
 
+func (player *Player) MoveTo(target mgl32.Vec3) {
+	var diff = target.Sub(player.Position)
+	diff = diff.Add(mgl32.Vec3{0.5, 0, 0.5})
+	player.IncreasePostion(diff.Elem())
+	player.Camera.IncreasePostion(diff.Elem())
+}
+
 func (player *Player) Move() {
 	rotationMatrix := mgl32.Rotate2D(mgl32.DegToRad(player.Camera.Yaw))
 	velocity := player.velocity.Mul(Window.Delta)
