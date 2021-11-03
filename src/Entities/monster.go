@@ -24,8 +24,8 @@ func NewMonster(model []*Models.TexturedModel, position mgl32.Vec3) *Monster {
 	}
 
 	bbox := BBox{
-		position,
-		mgl32.Vec3{1, 1, 1},
+		position.Add(mgl32.Vec3{0, 1, 0}),
+		mgl32.Vec3{0.5, 1, 0.5},
 	}
 
 	monster := &Monster{

@@ -31,7 +31,7 @@ func (picker *MousePicker) GetMonsterGroup() ([]*Entities.Monster, error) {
 		currPos = currPos.Add(picker.Ray.Mul(distance))
 	}
 
-	if distance < 1 {
+	if distance < 0.01 {
 		return res, nil
 	}
 
