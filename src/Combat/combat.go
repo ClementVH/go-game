@@ -28,6 +28,18 @@ func NewCombat(group []*Entities.Monster, chunk *Entities.Chunk) *Combat {
 
 	player.MoveTo(startPositionWorldCoordinates)
 
+	monstersStartPositions := chunk.StartPositions.Teams[1]
+	for index, monster := range group {
+		monstersStartPosition := monstersStartPositions[index]
+		monsterStartPositionWorldCoordinates := mgl32.Vec3{
+			chunk.Position.X() + monstersStartPosition.X(),
+			0,
+			chunk.Position.Z() + monstersStartPosition.Y(),
+		}
+
+		monster.MoveTo(monsterStartPositionWorldCoordinates)
+	}
+
 	return &Combat{
 		group,
 		chunk,

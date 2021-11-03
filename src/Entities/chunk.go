@@ -36,13 +36,13 @@ func NewChunk(model []*Models.TexturedModel, X, Z int, startPositionId uint32) *
 				mgl32.Vec2{5, 3},
 			},
 			{
-				mgl32.Vec2{13, 9},
-				mgl32.Vec2{14, 9},
-				mgl32.Vec2{15, 9},
+				mgl32.Vec2{12, 10},
+				mgl32.Vec2{12, 11},
+				mgl32.Vec2{12, 12},
 
-				mgl32.Vec2{16, 8},
-				mgl32.Vec2{16, 7},
-				mgl32.Vec2{16, 6},
+				mgl32.Vec2{9, 13},
+				mgl32.Vec2{10, 13},
+				mgl32.Vec2{11, 13},
 			},
 		},
 	}
