@@ -15,7 +15,7 @@ func (picker *MousePicker) GetStartPosition() (mgl32.Vec2, error) {
 	var res mgl32.Vec2
 	var currIt = 50
 
-	chunk := State.Combat.Combat.GetChunk()
+	chunk := State.Combat.GetChunk()
 	positions := chunk.StartPositions.Teams[0]
 
 	for distance >= 0.01 && currIt > 0 {

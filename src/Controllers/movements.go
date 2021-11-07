@@ -65,6 +65,10 @@ func InitCameraMovements() {
 			player.Velocity = player.Velocity.Normalize()
 		}
 
-		player.Velocity = player.Velocity.Mul(RUN_SPEED)
+		if State.Combat != nil && State.Combat.GetStatus() == "PRE_COMBAT" {
+			player.Velocity = player.Velocity.Mul(0)
+		} else {
+			player.Velocity = player.Velocity.Mul(RUN_SPEED)
+		}
 	})
 }

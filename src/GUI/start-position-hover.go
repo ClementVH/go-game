@@ -10,9 +10,9 @@ import (
 
 func (gui *GUI) runStartPositionHover(button glfw.MouseButton, action glfw.Action) {
 
-	if State.Combat.Combat != nil && button == glfw.MouseButton1 && action == glfw.Release {
+	if State.Combat != nil && button == glfw.MouseButton1 && action == glfw.Release {
 		var position, err = State.GUI.MousePicker.GetStartPosition()
-		chunk := State.Combat.Combat.GetChunk()
+		chunk := State.Combat.GetChunk()
 		player := State.GetPlayer()
 		if err == nil {
 			fmt.Println(position)

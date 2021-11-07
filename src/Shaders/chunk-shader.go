@@ -72,8 +72,8 @@ func (shader *ChunkShader) LoadTextures() {
 }
 
 func (shader *ChunkShader) LoadCombatChunk() {
-	if State.Combat.Combat != nil && State.Combat.Combat.GetChunk() != nil {
-		loadVector(shader.combatChunk, State.Combat.Combat.GetChunk().Position)
+	if State.Combat != nil && State.Combat.GetChunk() != nil {
+		loadVector(shader.combatChunk, State.Combat.GetChunk().Position)
 	} else {
 		loadVector(shader.combatChunk, mgl32.Vec3{-1, 0, 1})
 	}

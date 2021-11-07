@@ -2,19 +2,20 @@ package State
 
 import "go-game/src/Entities"
 
-var Combat CombatState = CombatState{
-	nil,
-}
+var Combat *CombatState
 
 type ICombat interface {
 	GetMonsters() []*Entities.Monster
 	GetChunk() *Entities.Chunk
+	GetStatus() string
 }
 
 type CombatState struct {
-	Combat ICombat
+	ICombat
 }
 
 func (state *CombatState) SetCombat(combat ICombat) {
-	state.Combat = combat
+	Combat = &CombatState{
+		combat,
+	}
 }

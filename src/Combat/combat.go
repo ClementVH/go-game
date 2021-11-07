@@ -54,3 +54,7 @@ func (combat *Combat) GetMonsters() []*Entities.Monster {
 func (combat *Combat) GetChunk() *Entities.Chunk {
 	return combat.Chunk
 }
+
+func (combat *Combat) GetStatus() string {
+	return combat.Status
+}
