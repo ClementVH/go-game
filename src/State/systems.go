@@ -9,6 +9,11 @@ type ISystem interface {
 	Tick()
 }
 
+type IPlayerSystem interface {
+	ISystem
+	GetPlayer() *Entities.Player
+}
+
 type IWildMonsterSystem interface {
 	ISystem
 	GetGroups() [][]*Entities.Monster
@@ -20,12 +25,12 @@ type IChunkSystem interface {
 }
 
 type SystemsState struct {
-	PlayerSystem      ISystem
+	PlayerSystem      IPlayerSystem
 	ChunkSystem       IChunkSystem
 	WildMonsterSystem IWildMonsterSystem
 }
 
-func (state *SystemsState) SetPlayerSystem(playerSystem ISystem) {
+func (state *SystemsState) SetPlayerSystem(playerSystem IPlayerSystem) {
 	state.PlayerSystem = playerSystem
 }
 

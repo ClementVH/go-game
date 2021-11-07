@@ -8,31 +8,35 @@ import (
 	"github.com/go-gl/mathgl/mgl32"
 )
 
-var Player *Entities.Player
-
 type PlayerSystem struct {
 	System
+	Player *Entities.Player
 }
 
 func NewPlayerSystem() *PlayerSystem {
 
-	Player = Entities.NewPlayer(
+	player := Entities.NewPlayer(
 		Loaders.LoadGltf("../res/player", "player.gltf"),
 		mgl32.Vec3{43*16 + 8, 0, 46*16 + 8},
 		0, 0, 0, 1,
 	)
 
-	State.Camera.SetCamera(Player.Camera)
+	State.Camera.SetCamera(player.Camera)
 
 	return &PlayerSystem{
 		System: *NewSystem(),
+		Player: player,
 	}
 }
 
 func (playerSystem *PlayerSystem) Tick() {
-	Player.Move()
+	playerSystem.Player.Move()
 }
 
 func (playerSystem *PlayerSystem) GetEntities() []Entities.IEntity {
-	return []Entities.IEntity{Player}
+	return []Entities.IEntity{playerSystem.Player}
+}
+
+func (playerSystem *PlayerSystem) GetPlayer() *Entities.Player {
+	return playerSystem.Player
 }

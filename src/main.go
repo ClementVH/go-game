@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"time"
 
+	"go-game/src/Controllers"
 	"go-game/src/Entities"
 	"go-game/src/GUI"
 	"go-game/src/RenderEngine"
@@ -33,6 +34,8 @@ func main() {
 	State.Systems.SetChunkSystem(Systems.NewChunkSystem())
 	State.Systems.SetWildMonsterSystem(Systems.NewWildMonsterSystem())
 	gui := GUI.NewGUI()
+
+	Controllers.InitCameraMovements()
 
 	light := Entities.NewLight(
 		mgl32.Vec3{3333, 10000, -3333},

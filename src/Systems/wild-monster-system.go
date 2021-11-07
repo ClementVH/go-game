@@ -3,6 +3,7 @@ package Systems
 import (
 	"go-game/src/Entities"
 	"go-game/src/Loaders"
+	"go-game/src/State"
 	"math"
 	"math/rand"
 
@@ -38,8 +39,8 @@ func (wildMonsterSystem *WildMonsterSystem) Tick() {
 
 func (wildMonsterSystem *WildMonsterSystem) GetEntities() []Entities.IEntity {
 	entities := make([]Entities.IEntity, 0, 256)
-	playerChunkX := math.Floor(float64(Player.Position.X()) / 16)
-	playerChunkZ := math.Floor(float64(Player.Position.Z()) / 16)
+	playerChunkX := math.Floor(float64(State.GetPlayer().Position.X()) / 16)
+	playerChunkZ := math.Floor(float64(State.GetPlayer().Position.Z()) / 16)
 
 	for _, group := range wildMonsterGroups {
 		for _, wildMonster := range group {
@@ -92,8 +93,8 @@ func loadSpawnZone(zoneIndex int) {
 
 func (wildMonsterSystem *WildMonsterSystem) GetGroups() [][]*Entities.Monster {
 	groups := make([][]*Entities.Monster, 0, 256)
-	playerChunkX := math.Floor(float64(Player.Position.X()) / 16)
-	playerChunkZ := math.Floor(float64(Player.Position.Z()) / 16)
+	playerChunkX := math.Floor(float64(State.GetPlayer().Position.X()) / 16)
+	playerChunkZ := math.Floor(float64(State.GetPlayer().Position.Z()) / 16)
 
 	for _, group := range wildMonsterGroups {
 		for _, wildMonster := range group {

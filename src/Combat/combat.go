@@ -2,7 +2,7 @@ package Combat
 
 import (
 	"go-game/src/Entities"
-	"go-game/src/Systems"
+	"go-game/src/State"
 
 	"github.com/go-gl/mathgl/mgl32"
 )
@@ -18,7 +18,7 @@ type Combat struct {
 }
 
 func NewCombat(group []*Entities.Monster, chunk *Entities.Chunk) *Combat {
-	player := Systems.Player
+	player := State.GetPlayer()
 	startPosition := chunk.StartPositions.Teams[0][0]
 	startPositionWorldCoordinates := mgl32.Vec3{
 		chunk.Position.X() + startPosition.X(),
